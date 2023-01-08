@@ -1,0 +1,16 @@
+{
+    "paintings": [
+        {
+            "name": "Mona Lisa",
+            "painter": "Leo",
+            "imageUrl": "https://cdn.pariscityvision.com/library/image/5449.jpg",
+            "category": ["a", "b"]
+        },
+        {
+            "name": "Mona Lisa",
+            "painter": "Leo",
+            "imageUrl": "https://cdn.pariscityvision.com/library/image/5449.jpg",
+            "category": ["a", "b"]
+        }
+    ]
+}
