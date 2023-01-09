@@ -18,7 +18,7 @@ export default function HomeScreen({navigation}) {
     <>
       <SearchBar 
         term = {term} 
-        onTermChange = {newTerm => setTerm(newTerm)} 
+        onTermChange = {newTerm => {setTerm(newTerm); getDataApi(newTerm) }} 
         onTermSubmit = {() => getDataApi(term)}
       />
       {errorMessage ? <Text> {errorMessage} </Text> : null}

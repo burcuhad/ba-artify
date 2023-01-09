@@ -2,7 +2,6 @@ import React from "react";
 import {Text, View, StyleSheet, ScrollView} from "react-native";
 import YoutubePlayer from 'react-native-youtube-iframe';
 import WebView from "react-native-webview";
-import ResultsDetail from "../components/ResultsDetail";
 
 export default function TutorialScreen({route, navigation}) {
     const painting = route.params;
@@ -10,8 +9,6 @@ export default function TutorialScreen({route, navigation}) {
 
     return (
         <View style = {styles.container}>
-            <ResultsDetail result={painting.item} list={true}/>
-
             <WebView
                 style = {{  marginTop: 20, width: 320, height: 100 }}
                 javaScriptEnabled = {true}
