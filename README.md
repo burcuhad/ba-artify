@@ -6,3 +6,6 @@ npx expo start --localhost --android
 
 to run dummy-data server 
 json-server -H "0.0.0.0" -w dummy-data/db.json
+
+to build the sdk
+eas build -p android --profile preview
