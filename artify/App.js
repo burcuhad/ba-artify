@@ -8,6 +8,7 @@ import TutorialScreen from './src/screens/TutorialScreen';
 import QuizScreen from './src/screens/QuizScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import HomeScreen from './src/screens/HomeScreen';
+import CameraScreen from './src/screens/CameraScreen'
 
 //TODO 
 
@@ -32,6 +33,7 @@ export default function App() {
         <Stack.Screen options={{headerShown: false}} name="Drawer2" component={DrawerRoutes} />
         <Stack.Screen name="Tutorial" component={TutorialScreen} />
         <Stack.Screen name="ResultsShow" options={{ title: 'Painting' }} component={ResultPaintingShowScreen} />
+        <Stack.Screen name='CameraScreen' component={CameraScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
