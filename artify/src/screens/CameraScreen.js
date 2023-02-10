@@ -1,15 +1,18 @@
 import React, { useState, useRef, useEffect } from "react";  
-import {Image, View, StyleSheet, Button, TouchableOpacity, Text, ScrollView, Dimensions, SafeAreaView} from "react-native";
-import ResultsDetail from "../components/ResultsDetail";
-import { launchCamera, launchImageLibrary } from "react-native-image-picker"
+import {Image, View, StyleSheet, Button, TouchableOpacity, Text, Dimensions, SafeAreaView} from "react-native";
 import { Camera } from 'expo-camera';
+import { shareAsync } from 'expo-sharing';
 import * as ImagePicker from 'expo-image-picker';
+import * as MediaLibrary from 'expo-media-library'
 
 export default function CameraScreen({route, navigation}) {
-    const painting = route.params;
+  const painting = route.params;
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
+  const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState(null);
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
+  const [photo, setPhoto] = useState(null);
+  const [imageuri, url] = useState('');
 
   const [isPreview, setIsPreview] = useState(false);
   const [isCameraReady, setIsCameraReady] = useState(false);
@@ -23,8 +26,10 @@ export default function CameraScreen({route, navigation}) {
     const galleryPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
     setHasGalleryPermission(galleryPermission.status === 'granted');
 
-    console.log("First img perm: " + galleryPermission.status + ", camera perm: " + cameraPermission.status);
+    const mediaLibraryPermission = await MediaLibrary.requestPermissionsAsync();
+    setHasMediaLibraryPermission(mediaLibraryPermission.status === 'granted');
 
+    //console.log("First img perm: " + galleryPermission.status + ", camera perm: " + cameraPermission.status);
     if (galleryPermission.status !== 'granted' && cameraPermission.status !== 'granted') {
       alert('Permission for media access needed.');
     }
@@ -34,24 +39,26 @@ export default function CameraScreen({route, navigation}) {
       permisionFunction();
   }, []);
 
+  const takePicture = async () => {
+    if (cameraRef.current) {
+      const options = { quality: 0.5, base64: true, exif: false, skipProcessing: true };
+      const data = await cameraRef.current.takePictureAsync(options);
+      const source = data.uri;
+      setPhoto(data);
+      /*if (source) {
+        await cameraRef.current.pausePreview();
+        setIsPreview(true);
+      }      */
+    }   
+  };
+
+
+    
+
+
   const onCameraReady = () => {
     setIsCameraReady(true);
   };
-  
-  const takePicture = async () => {
-    if (cameraRef.current) {
-      const options = { quality: 0.5, base64: true, skipProcessing: true };
-      const data = await cameraRef.current.takePictureAsync(options);
-      const source = data.uri;
-      if (source) {
-        await cameraRef.current.pausePreview();
-        setIsPreview(true);
-        console.log("picture: ", source);
-        console.log("picture: ", source.uri);
-
-      }
-    }
-  }
 
   const switchCamera = () => {
     if (isPreview) {
@@ -82,7 +89,7 @@ export default function CameraScreen({route, navigation}) {
   if(hasGalleryPermission === false ) {
     return <Text> No access to internal storage</Text>
   }
-  console.log("gallery permission: " + hasGalleryPermission + ", camera perm: " + hasCameraPermission)
+  console.log("hasMediaLibraryPermission: " + hasMediaLibraryPermission + ", gallery permission: " + hasGalleryPermission + ", camera perm: " + hasCameraPermission)
 
   const cancelPreview = async () => {
     await cameraRef.current.resumePreview();
@@ -90,10 +97,15 @@ export default function CameraScreen({route, navigation}) {
   };
 
   const renderCancelPreviewButton = () => (
-    <TouchableOpacity onPress={cancelPreview} style={styles.closeButton}>
-      <View style={[styles.closeCross, { transform: [{ rotate: "45deg" }] }]} />
-      <View style={[styles.closeCross, { transform: [{ rotate: "-45deg" }] }]} />
-    </TouchableOpacity>
+    <View style={styles.controlForUpload}>
+      <TouchableOpacity onPress={cancelPreview} style={styles.closeButton}>
+        <View style={[styles.closeCross, { transform: [{ rotate: "45deg" }] }]} />
+        <View style={[styles.closeCross, { transform: [{ rotate: "-45deg" }] }]} />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={upload}>
+        <Text style={styles.text}>{"Upload"}</Text>
+      </TouchableOpacity>
+    </View>    
   );
 
   const renderCaptureControl = () => (
@@ -105,7 +117,7 @@ export default function CameraScreen({route, navigation}) {
         activeOpacity={0.7}
         disabled={!isCameraReady}
         onPress={takePicture}
-        style={styles.capture}
+        style={styles.captureButton}
       />
     </View>
   );
@@ -117,22 +129,50 @@ export default function CameraScreen({route, navigation}) {
     return <Text style={styles.text}> No access to camera</Text>;
   }
 
+  if(photo) {
+    const sharePhoto = () => {
+      shareAsync(photo.uri).then(() => {
+        setPhoto(undefined);
+      })
+    };
+
+    const savePhoto = () => {
+      MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
+        setPhoto(undefined);
+      })
+    };
+
+    return (
+      <SafeAreaView style={styles.container}>
+        <Image style={styles.previewImage} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
+        <Button title="Share" onPress={sharePhoto}/>
+        {hasMediaLibraryPermission ? <Button title="Save" onPress={savePhoto}/> : undefined}
+        <Button title="Discard" onPress={() => setPhoto(undefined)}/>
+      </SafeAreaView>
+    );
+  }
+
   return (
   <SafeAreaView style={styles.container}>
-    <Camera
-      ref={cameraRef}
-      style={styles.container}
-      type={cameraType}
-      flashMode={Camera.Constants.FlashMode.off}
-      onCameraReady={onCameraReady}
-      onMountError={(error) => {
-        console.log("camera error", error);
-      }}
-    />
     <View style={styles.container}>
-      {isPreview && renderCancelPreviewButton()}
-      {!isPreview && renderCaptureControl()}
+
+      <Camera
+        ref={cameraRef}
+        style={styles.container}
+        type={cameraType}
+        flashMode={Camera.Constants.FlashMode.off}
+        onCameraReady={onCameraReady}
+        onMountError={(error) => {
+          console.log("camera error", error);
+        }}
+      />
+      <View style={styles.container}>
+        {isPreview && renderCancelPreviewButton()}
+        {!isPreview && renderCaptureControl()}
+      </View>
+    <Text> no img</Text>
     </View>
+
   </SafeAreaView>
   );
   }
@@ -141,11 +181,38 @@ export default function CameraScreen({route, navigation}) {
   const closeButtonSize = Math.floor(WINDOW_HEIGHT * 0.032);
   const captureSize = Math.floor(WINDOW_HEIGHT * 0.09);
    
-  const styles = StyleSheet.create({
-    container: {
-       ...StyleSheet.absoluteFillObject,
-     },
-    closeButton: {
+const styles = StyleSheet.create({
+  container: {
+    /*flex: 1,
+     alignItems: "center",
+    justifyContent: "center"*/
+      ...StyleSheet.absoluteFillObject,
+  },
+  cameraview: {
+    height: 400,
+    width: "95%",
+
+    backgroundColor: "green",
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  previewImage: {
+    alignSelf: "stretch",
+    flex: 1
+    /*height: "90%",
+    width: "90%",
+    padding: 10*/
+  },
+  camera: {
+    height: "95%",
+    width: "95%",
+    backgroundColor: "blue",
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  closeButton: {
     position: "absolute",
     top: 35,
     left: 15,
@@ -157,54 +224,40 @@ export default function CameraScreen({route, navigation}) {
     backgroundColor: "#c4c5c4",
     opacity: 0.7,
     zIndex: 2,
-     },
-    media: {
-       ...StyleSheet.absoluteFillObject,
-     },
-    closeCross: {
+  },
+  media: {
+      ...StyleSheet.absoluteFillObject,
+  },
+  closeCross: {
     width: "68%",
     height: 1,
     backgroundColor: "black",
-     },
-    control: {
+  },
+  controlForUpload: {
+    position: "relative",
+    flexDirection: "row",
+    top: 38,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  control: {
     position: "absolute",
     flexDirection: "row",
     bottom: 38,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-     },
-    capture: {
+  },
+  captureButton: {
     backgroundColor: "#f5f6f5",
     borderRadius: 5,
     height: captureSize,
     width: captureSize,
     borderRadius: Math.floor(captureSize / 2),
     marginHorizontal: 31,
-     },
-    recordIndicatorContainer: {
-    flexDirection: "row",
-    position: "absolute",
-    top: 25,
-    alignSelf: "center",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "transparent",
-    opacity: 0.7,
-     },
-    recordTitle: {
-    fontSize: 14,
-    color: "#ffffff",
-    textAlign: "center",
-     },
-    recordDot: {
-    borderRadius: 3,
-    height: 6,
-    width: 6,
-    backgroundColor: "#ff0000",
-    marginHorizontal: 5,
-     },
-    text: {
+  },
+  text: {
     color: "#fff",
-     },
+  },
 });
