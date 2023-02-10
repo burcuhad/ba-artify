@@ -34,6 +34,8 @@ export default function App() {
         <Stack.Screen name="Tutorial" component={TutorialScreen} />
         <Stack.Screen name="ResultsShow" options={{ title: 'Painting' }} component={ResultPaintingShowScreen} />
         <Stack.Screen name='CameraScreen' component={CameraScreen}/>
+        <Stack.Screen name='ProfileScreen' component={ProfileScreen}/>
+
       </Stack.Navigator>
     </NavigationContainer>
   );

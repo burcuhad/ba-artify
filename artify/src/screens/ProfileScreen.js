@@ -8,8 +8,13 @@ import {
     ScrollView,
 } from "react-native";
 
-export default function ProfileScreen() {
-
-    return (<Text> Profile Screen</Text>);
+export default function ProfileScreen({route}) {
+    const loc = route.params.name
+    return (
+        <View>
+            <Text> hello {loc} </Text>
+        </View>
+        
+    );
 };
    

@@ -141,12 +141,13 @@ export default function CameraScreen({route, navigation}) {
         setPhoto(undefined);
       })
     };
-
     return (
       <SafeAreaView style={styles.container}>
         <Image style={styles.previewImage} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
+        
         <Button title="Share" onPress={sharePhoto}/>
-        {hasMediaLibraryPermission ? <Button title="Save" onPress={savePhoto}/> : undefined}
+        <Button title="Upload" onPress={() => navigation.navigate("Profile", {name: JSON.stringify(photo.base64)})}/>
+        {hasMediaLibraryPermission ? <Button title="Save in Camera Roll" onPress={savePhoto}/> : undefined}
         <Button title="Discard" onPress={() => setPhoto(undefined)}/>
       </SafeAreaView>
     );
