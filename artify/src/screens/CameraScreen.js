@@ -12,7 +12,7 @@ export default function CameraScreen({route, navigation}) {
   const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState(null);
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
   const [photo, setPhoto] = useState(null);
-  const [imageuri, url] = useState('');
+  const [deneme, setDeneme] = useState(null);
 
   const [isPreview, setIsPreview] = useState(false);
   const [isCameraReady, setIsCameraReady] = useState(false);
@@ -45,6 +45,7 @@ export default function CameraScreen({route, navigation}) {
       const data = await cameraRef.current.takePictureAsync(options);
       const source = data.uri;
       setPhoto(data);
+      setDeneme("data:image/jpg;base64," + data.base64);
       /*if (source) {
         await cameraRef.current.pausePreview();
         setIsPreview(true);
@@ -146,7 +147,7 @@ export default function CameraScreen({route, navigation}) {
         <Image style={styles.previewImage} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
         
         <Button title="Share" onPress={sharePhoto}/>
-        <Button title="Upload" onPress={() => navigation.navigate("Profile", {name: JSON.stringify(photo.base64)})}/>
+        <Button title="Upload" onPress={() => navigation.navigate("Profile", {deneme})}/>
         {hasMediaLibraryPermission ? <Button title="Save in Camera Roll" onPress={savePhoto}/> : undefined}
         <Button title="Discard" onPress={() => setPhoto(undefined)}/>
       </SafeAreaView>

@@ -5,7 +5,8 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { StyleSheet} from 'react-native';
 import ResultPaintingShowScreen from './src/screens/ResultsPaintingShowScreen';
 import TutorialScreen from './src/screens/TutorialScreen';
-import QuizScreen from './src/screens/QuizScreen';
+import QuizHomeScreen from './src/screens/QuizHomeScreen';
+import QuizQuestionScreen from './src/screens/QuizQuestionScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import CameraScreen from './src/screens/CameraScreen'
@@ -20,7 +21,7 @@ function DrawerRoutes() {
   return (
     <Drawer.Navigator initialRouteName="Home Gallery"> 
       <Drawer.Screen name="Home Gallery" options={{ title: 'Artify' }} component={HomeScreen} />
-      <Drawer.Screen name="Quiz" component={QuizScreen} />
+      <Drawer.Screen name="QuizHome" component={QuizHomeScreen} />
       <Drawer.Screen name="Profile" component={ProfileScreen} />
     </Drawer.Navigator>
   );
@@ -34,8 +35,8 @@ export default function App() {
         <Stack.Screen name="Tutorial" component={TutorialScreen} />
         <Stack.Screen name="ResultsShow" options={{ title: 'Painting' }} component={ResultPaintingShowScreen} />
         <Stack.Screen name='CameraScreen' component={CameraScreen}/>
-        <Stack.Screen name='ProfileScreen' component={ProfileScreen}/>
-
+        <Stack.Screen name='Profile' component={ProfileScreen}/>
+        <Stack.Screen name='QuizQuestion' component={QuizQuestionScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

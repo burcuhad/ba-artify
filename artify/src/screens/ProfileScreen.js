@@ -9,7 +9,8 @@ import {
 } from "react-native";
 
 export default function ProfileScreen({route}) {
-    const loc = route.params.name
+    //console.log("in profile: ", route.params)
+    const loc = route.params
     return (
         <View>
             <Text> hello {loc} </Text>
