@@ -13,7 +13,6 @@ import CameraScreen from './src/screens/CameraScreen'
 
 //TODO 
 
-
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 

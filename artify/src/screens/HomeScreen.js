@@ -1,12 +1,16 @@
-import React, {useState} from "react";  
+import React, {useState, useEffect} from "react";  
 import {Text, View, StyleSheet, Button, FlatList, Image, ScrollView} from "react-native";
 import SearchBar from "../components/SearchBar";
 import useResultPaintings from "../hooks/useResultPaintings";
 import ResultPaintingsList from "../components/ResultPaintingsList";
+import dto from "../hooks/dto";
 
 export default function HomeScreen({navigation}) {
   const [term, setTerm] = useState("");
   const [getDataApi, results, errorMessage] = useResultPaintings();
+
+  const [insert, selectPaintings] = dto();
+
 
   const filterResultsByCategory = (category) => {
     return results.filter(result => {

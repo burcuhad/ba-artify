@@ -44,7 +44,9 @@ export default function CameraScreen({route, navigation}) {
       const options = { quality: 0.5, base64: true, exif: false, skipProcessing: true };
       const data = await cameraRef.current.takePictureAsync(options);
       const source = data.uri;
+
       setPhoto(data);
+      console.log("data: ", data.uri)
       setDeneme("data:image/jpg;base64," + data.base64);
       /*if (source) {
         await cameraRef.current.pausePreview();
@@ -137,10 +139,11 @@ export default function CameraScreen({route, navigation}) {
       })
     };
 
-    const savePhoto = () => {
+    const savePhoto = async () => {
       MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
         setPhoto(undefined);
       })
+      console.log("inside save: ", a)
     };
     return (
       <SafeAreaView style={styles.container}>

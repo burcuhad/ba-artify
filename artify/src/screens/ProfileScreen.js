@@ -10,10 +10,10 @@ import {
 
 export default function ProfileScreen({route}) {
     //console.log("in profile: ", route.params)
-    const loc = route.params
+    //const loc = route.params
     return (
         <View>
-            <Text> hello {loc} </Text>
+            <Text> hello  </Text>
         </View>
         
     );
