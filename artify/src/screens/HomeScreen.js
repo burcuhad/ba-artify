@@ -3,6 +3,7 @@ import {Text, View, StyleSheet, Button, FlatList, Image, ScrollView} from "react
 import SearchBar from "../components/SearchBar";
 import useResultPaintings from "../hooks/useResultPaintings";
 import ResultPaintingsList from "../components/ResultPaintingsList";
+import auth from "../../firebaseConfig";
 import dto from "../hooks/dto";
 
 export default function HomeScreen({navigation}) {
@@ -26,6 +27,8 @@ export default function HomeScreen({navigation}) {
         onTermSubmit = {() => getDataApi(term)}
       />
       {errorMessage ? <Text> {errorMessage} </Text> : null}
+
+      <Button title ="insert" onPress={() => insert() } />
 
       <ScrollView style= {{marginBottom: 20}}>
         <ResultPaintingsList  

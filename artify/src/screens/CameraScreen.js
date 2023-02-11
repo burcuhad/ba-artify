@@ -5,18 +5,15 @@ import { shareAsync } from 'expo-sharing';
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library'
 
-export default function CameraScreen({route, navigation}) {
-  const painting = route.params;
+export default function CameraScreen({navigation}) {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
   const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState(null);
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
   const [photo, setPhoto] = useState(null);
-  const [deneme, setDeneme] = useState(null);
 
   const [isPreview, setIsPreview] = useState(false);
   const [isCameraReady, setIsCameraReady] = useState(false);
-  const [isGalleryReady, setIsGalleryReady] = useState(false);
   const cameraRef = useRef();
 
   const permisionFunction = async () => {
@@ -29,7 +26,6 @@ export default function CameraScreen({route, navigation}) {
     const mediaLibraryPermission = await MediaLibrary.requestPermissionsAsync();
     setHasMediaLibraryPermission(mediaLibraryPermission.status === 'granted');
 
-    //console.log("First img perm: " + galleryPermission.status + ", camera perm: " + cameraPermission.status);
     if (galleryPermission.status !== 'granted' && cameraPermission.status !== 'granted') {
       alert('Permission for media access needed.');
     }
@@ -47,17 +43,12 @@ export default function CameraScreen({route, navigation}) {
 
       setPhoto(data);
       console.log("data: ", data.uri)
-      setDeneme("data:image/jpg;base64," + data.base64);
       /*if (source) {
         await cameraRef.current.pausePreview();
         setIsPreview(true);
       }      */
     }   
   };
-
-
-    
-
 
   const onCameraReady = () => {
     setIsCameraReady(true);
@@ -73,25 +64,11 @@ export default function CameraScreen({route, navigation}) {
            : Camera.Constants.Type.back
     );
   };
-  
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.canceled) {
-      setImage(result.assets);
-    }
-  };
 
   if(hasGalleryPermission === false ) {
     return <Text> No access to internal storage</Text>
   }
+
   console.log("hasMediaLibraryPermission: " + hasMediaLibraryPermission + ", gallery permission: " + hasGalleryPermission + ", camera perm: " + hasCameraPermission)
 
   const cancelPreview = async () => {
@@ -148,38 +125,38 @@ export default function CameraScreen({route, navigation}) {
     return (
       <SafeAreaView style={styles.container}>
         <Image style={styles.previewImage} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
-        
         <Button title="Share" onPress={sharePhoto}/>
-        <Button title="Upload" onPress={() => navigation.navigate("Profile", {deneme})}/>
+        <Button title="Upload" onPress={() => navigation.navigate("Profile", okko)}/>
         {hasMediaLibraryPermission ? <Button title="Save in Camera Roll" onPress={savePhoto}/> : undefined}
         <Button title="Discard" onPress={() => setPhoto(undefined)}/>
+        <TouchableOpacity onPress={() => setPhoto(undefined)} style={styles.closeButton}>
+        <View style={[styles.closeCross, { transform: [{ rotate: "45deg" }] }]} />
+        <View style={[styles.closeCross, { transform: [{ rotate: "-45deg" }] }]} />
+      </TouchableOpacity>
       </SafeAreaView>
     );
   }
 
   return (
-  <SafeAreaView style={styles.container}>
-    <View style={styles.container}>
-
-      <Camera
-        ref={cameraRef}
-        style={styles.container}
-        type={cameraType}
-        flashMode={Camera.Constants.FlashMode.off}
-        onCameraReady={onCameraReady}
-        onMountError={(error) => {
-          console.log("camera error", error);
-        }}
-      />
+    <SafeAreaView style={styles.container}>
       <View style={styles.container}>
-        {isPreview && renderCancelPreviewButton()}
-        {!isPreview && renderCaptureControl()}
+        <Camera
+          ref={cameraRef}
+          style={styles.container}
+          type={cameraType}
+          flashMode={Camera.Constants.FlashMode.off}
+          onCameraReady={onCameraReady}
+          onMountError={(error) => {
+            console.log("camera error", error);
+          }}
+        />
+        <View style={styles.container}>
+          {isPreview && renderCancelPreviewButton()}
+          {!isPreview && renderCaptureControl()}
+        </View>
       </View>
-    <Text> no img</Text>
-    </View>
-
-  </SafeAreaView>
-  );
+    </SafeAreaView>
+    );
   }
 
   const WINDOW_HEIGHT = Dimensions.get("window").height;
