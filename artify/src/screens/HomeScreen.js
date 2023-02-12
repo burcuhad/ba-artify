@@ -10,8 +10,7 @@ export default function HomeScreen({navigation}) {
   const [term, setTerm] = useState("");
   const [getDataApi, results, errorMessage] = useResultPaintings();
 
-  const [insert, selectPaintings] = dto();
-
+  const [insert, selectPaintings, getPaintings] = dto();
 
   const filterResultsByCategory = (category) => {
     return results.filter(result => {

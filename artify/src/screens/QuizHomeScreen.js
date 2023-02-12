@@ -1,4 +1,4 @@
-import React, { useState} from "react";  
+import React, { useState } from "react";  
 import {Text, View, Image, Button, TouchableOpacity, StyleSheet} from "react-native";
 import QuizTemplate from "../components/QuizTemplate"
 
@@ -6,32 +6,63 @@ export default function QuizHomeScreen({navigation}) {
 
     return (
         <View style = {styles.container}>
-            <QuizTemplate home={true}/>
-            <Button
-                title="Start"
-                onPress={() => {navigation.navigate("QuizQuestion")}}/>
-              
+            <Text style={styles.text} >
+                Test what you've learned!
+            </Text>
+            <View style= {styles.insideContainer}>
+                <Image
+                    style={styles.imageHome}
+                    //source={{uri: "https://duquets.files.wordpress.com/2011/12/art-history-collage.jpg"}}
+                    source={require('../image/artist.png')}
+                    //source={require('../image/burnout2.png')}
+                />   
+            </View>
+            <TouchableOpacity 
+                style= {styles.button} 
+                onPress={() => {navigation.navigate("QuizQuestion")}}>
+                <Text style = {styles.buttonText}> Start</Text>
+            </TouchableOpacity>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        marginLeft: 15,
-        marginRight: 15
+        paddingTop: 20,
+        paddingHorizontal: 20,
+        height: "100%"
     },
-    imageSingle: {
+    insideContainer: {
+        justifyContent: "center",
+        alignItems:"center",
+        flex: 1
+    },
+    imageHome: {
       alignself:"center",
       width: '100%',
       height: undefined,
       aspectRatio: 1,
       borderRadius: 4,
-      marginBottom: 5,
-      marginRight: 10
-  },
-    name: {
+      marginBottom: 400
+    },
+    text: {
+        alignSelf: "center",
         fontWeight: "bold",
-        fontSize: 16
+        color: "#CB997E",
+        fontSize: 20,
+        marginBottom: 200
+    },
+    button: {
+        alignSelf: "center",
+        width: "100%",
+        backgroundColor: "#6B705C",
+        padding: 15,
+        borderRadius: 14,
+        marginBottom: 40
+    },
+    buttonText: {
+        fontSize: 20,
+        fontWeight: "600",
+        color: "white"
     }
-
 });

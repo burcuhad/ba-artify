@@ -10,6 +10,7 @@ import QuizQuestionScreen from './src/screens/QuizQuestionScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import CameraScreen from './src/screens/CameraScreen'
+import QuizResultScreen from './src/screens/QuizResultScreen';
 
 //TODO 
 
@@ -18,9 +19,9 @@ const Drawer = createDrawerNavigator();
 
 function DrawerRoutes() {
   return (
-    <Drawer.Navigator initialRouteName="Home Gallery"> 
-      <Drawer.Screen name="Home Gallery" options={{ title: 'Artify' }} component={HomeScreen} />
-      <Drawer.Screen name="QuizHome" component={QuizHomeScreen} />
+    <Drawer.Navigator initialRouteName="HomeGallery"> 
+      <Drawer.Screen name="HomeGallery" options={{ title: 'Artify' }} component={HomeScreen} />
+      <Drawer.Screen name="QuizHome" component={QuizHomeScreen} options = {{ title: 'Quiz' }}/>
       <Drawer.Screen name="Profile" component={ProfileScreen} />
     </Drawer.Navigator>
   );
@@ -31,11 +32,12 @@ export default function App() {
     <NavigationContainer style = {styles.container}>
       <Stack.Navigator >
         <Stack.Screen options={{headerShown: false}} name="Drawer2" component={DrawerRoutes} />
-        <Stack.Screen name="Tutorial" component={TutorialScreen} />
-        <Stack.Screen name="ResultsShow" options={{ title: 'Painting' }} component={ResultPaintingShowScreen} />
-        <Stack.Screen name='CameraScreen' component={CameraScreen}/>
+        <Stack.Screen name="Tutorial" component={TutorialScreen} options = {{ title: ' ' }}/>
+        <Stack.Screen name="ResultsShow" options={{ title: ' ' }} component={ResultPaintingShowScreen} />
+        <Stack.Screen name='CameraScreen' component={CameraScreen} options = {{ title: ' ' }}/>
         <Stack.Screen name='Profile' component={ProfileScreen}/>
-        <Stack.Screen name='QuizQuestion' component={QuizQuestionScreen}/>
+        <Stack.Screen name='QuizQuestion' component={QuizQuestionScreen} options = {{ headerShown: false} }/>
+        <Stack.Screen name='QuizResult' component={QuizResultScreen} options = {{ headerShown: false} }/>
       </Stack.Navigator>
     </NavigationContainer>
   );

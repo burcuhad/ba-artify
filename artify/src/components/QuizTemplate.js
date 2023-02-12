@@ -24,8 +24,7 @@ export default function QuizTemplate({home}) {
 
 const styles = StyleSheet.create({
     container: {
-        marginLeft: 15,
-        marginRight: 15
+        paddingTop: 40
     },     
     imageHome: {
         alignself:"center",
@@ -33,7 +32,6 @@ const styles = StyleSheet.create({
         height: undefined,
         aspectRatio: 1,
         borderRadius: 4,
-        marginBottom: 5,
-        marginRight: 10
+        marginVertical: 10
     },
 });

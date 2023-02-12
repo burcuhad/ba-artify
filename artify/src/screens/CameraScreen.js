@@ -1,32 +1,29 @@
 import React, { useState, useRef, useEffect } from "react";  
-import {Image, View, StyleSheet, Button, TouchableOpacity, Text, Dimensions, SafeAreaView} from "react-native";
+import {Text, Image, View, SafeAreaView, Button, TouchableOpacity,Dimensions, StyleSheet, Alert} from "react-native";
 import { Camera } from 'expo-camera';
 import { shareAsync } from 'expo-sharing';
-import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library'
+import dto from "../hooks/dto";
 
 export default function CameraScreen({navigation}) {
+
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
-  const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
   const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState(null);
+
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
   const [photo, setPhoto] = useState(null);
-
-  const [isPreview, setIsPreview] = useState(false);
-  const [isCameraReady, setIsCameraReady] = useState(false);
   const cameraRef = useRef();
+
+  const [insert, selectPaintings, getPaintings, savePhotoDB] = dto();
 
   const permisionFunction = async () => {
     const cameraPermission = await Camera.requestCameraPermissionsAsync();
     setHasCameraPermission(cameraPermission.status === 'granted');
 
-    const galleryPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    setHasGalleryPermission(galleryPermission.status === 'granted');
-
     const mediaLibraryPermission = await MediaLibrary.requestPermissionsAsync();
     setHasMediaLibraryPermission(mediaLibraryPermission.status === 'granted');
 
-    if (galleryPermission.status !== 'granted' && cameraPermission.status !== 'granted') {
+    if (mediaLibraryPermission.status !== 'granted' && cameraPermission.status !== 'granted') {
       alert('Permission for media access needed.');
     }
   };
@@ -35,29 +32,9 @@ export default function CameraScreen({navigation}) {
       permisionFunction();
   }, []);
 
-  const takePicture = async () => {
-    if (cameraRef.current) {
-      const options = { quality: 0.5, base64: true, exif: false, skipProcessing: true };
-      const data = await cameraRef.current.takePictureAsync(options);
-      const source = data.uri;
-
-      setPhoto(data);
-      console.log("data: ", data.uri)
-      /*if (source) {
-        await cameraRef.current.pausePreview();
-        setIsPreview(true);
-      }      */
-    }   
-  };
-
-  const onCameraReady = () => {
-    setIsCameraReady(true);
-  };
-
+  console.log("hasMediaLibraryPermission: " + hasMediaLibraryPermission + ", camera perm: " + hasCameraPermission)
+  
   const switchCamera = () => {
-    if (isPreview) {
-      return;
-    }
     setCameraType((prevCameraType) =>
     prevCameraType === Camera.Constants.Type.back
            ? Camera.Constants.Type.front
@@ -65,70 +42,33 @@ export default function CameraScreen({navigation}) {
     );
   };
 
-  if(hasGalleryPermission === false ) {
-    return <Text> No access to internal storage</Text>
-  }
-
-  console.log("hasMediaLibraryPermission: " + hasMediaLibraryPermission + ", gallery permission: " + hasGalleryPermission + ", camera perm: " + hasCameraPermission)
-
-  const cancelPreview = async () => {
-    await cameraRef.current.resumePreview();
-    setIsPreview(false);
+  const takePicture = async () => {
+    if (cameraRef.current) {
+      const options = { quality: 0.5, base64: true, exif: false, skipProcessing: true };
+      const data = await cameraRef.current.takePictureAsync(options);
+      setPhoto(data);
+      console.log("takePictureAsync data: ", data.uri)
+    }   
   };
-
-  const renderCancelPreviewButton = () => (
-    <View style={styles.controlForUpload}>
-      <TouchableOpacity onPress={cancelPreview} style={styles.closeButton}>
-        <View style={[styles.closeCross, { transform: [{ rotate: "45deg" }] }]} />
-        <View style={[styles.closeCross, { transform: [{ rotate: "-45deg" }] }]} />
-      </TouchableOpacity>
-      <TouchableOpacity onPress={upload}>
-        <Text style={styles.text}>{"Upload"}</Text>
-      </TouchableOpacity>
-    </View>    
-  );
-
-  const renderCaptureControl = () => (
-    <View style={styles.control}>
-      <TouchableOpacity disabled={!isCameraReady} onPress={switchCamera}>
-        <Text style={styles.text}>{"Flip"}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        activeOpacity={0.7}
-        disabled={!isCameraReady}
-        onPress={takePicture}
-        style={styles.captureButton}
-      />
-    </View>
-  );
-
-  if (hasCameraPermission === null) {
-    return <View />;
-  }
-  if (hasCameraPermission === false) {
-    return <Text style={styles.text}> No access to camera</Text>;
-  }
 
   if(photo) {
     const sharePhoto = () => {
-      shareAsync(photo.uri).then(() => {
-        setPhoto(undefined);
-      })
+      shareAsync(photo.uri);
     };
 
     const savePhoto = async () => {
-      MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
-        setPhoto(undefined);
-      })
-      console.log("inside save: ", a)
+      MediaLibrary.saveToLibraryAsync(photo.uri);
+      //savePhotoDB(photo.uri);
+
+      Alert.alert("Saved in device camera roll!")
     };
+
     return (
       <SafeAreaView style={styles.container}>
         <Image style={styles.previewImage} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
         <Button title="Share" onPress={sharePhoto}/>
-        <Button title="Upload" onPress={() => navigation.navigate("Profile", okko)}/>
+        <Button title="Upload" onPress={() => navigation.navigate("Profile", "okko")}/>
         {hasMediaLibraryPermission ? <Button title="Save in Camera Roll" onPress={savePhoto}/> : undefined}
-        <Button title="Discard" onPress={() => setPhoto(undefined)}/>
         <TouchableOpacity onPress={() => setPhoto(undefined)} style={styles.closeButton}>
         <View style={[styles.closeCross, { transform: [{ rotate: "45deg" }] }]} />
         <View style={[styles.closeCross, { transform: [{ rotate: "-45deg" }] }]} />
@@ -145,54 +85,54 @@ export default function CameraScreen({navigation}) {
           style={styles.container}
           type={cameraType}
           flashMode={Camera.Constants.FlashMode.off}
-          onCameraReady={onCameraReady}
           onMountError={(error) => {
             console.log("camera error", error);
           }}
         />
         <View style={styles.container}>
-          {isPreview && renderCancelPreviewButton()}
-          {!isPreview && renderCaptureControl()}
+          <View style={styles.control}>
+            <TouchableOpacity  onPress={switchCamera}>
+              <Text style={styles.text}>{"Flip"}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={takePicture}
+              style={styles.captureButton}
+            />
+          </View>
         </View>
       </View>
     </SafeAreaView>
     );
   }
 
-  const WINDOW_HEIGHT = Dimensions.get("window").height;
-  const closeButtonSize = Math.floor(WINDOW_HEIGHT * 0.032);
-  const captureSize = Math.floor(WINDOW_HEIGHT * 0.09);
+const WINDOW_HEIGHT = Dimensions.get("window").height;
+const closeButtonSize = Math.floor(WINDOW_HEIGHT * 0.032);
+const captureSize = Math.floor(WINDOW_HEIGHT * 0.09);
    
 const styles = StyleSheet.create({
   container: {
-    /*flex: 1,
-     alignItems: "center",
-    justifyContent: "center"*/
       ...StyleSheet.absoluteFillObject,
   },
-  cameraview: {
-    height: 400,
-    width: "95%",
-
-    backgroundColor: "green",
-    borderRadius: 5,
+  control: {
+    position: "absolute",
+    flexDirection: "row",
+    bottom: 38,
+    width: "100%",
+    alignItems: "center",
     justifyContent: "center",
-    alignItems: "center"
   },
   previewImage: {
     alignSelf: "stretch",
     flex: 1
-    /*height: "90%",
-    width: "90%",
-    padding: 10*/
   },
-  camera: {
-    height: "95%",
-    width: "95%",
-    backgroundColor: "blue",
+  captureButton: {
+    backgroundColor: "#f5f6f5",
     borderRadius: 5,
-    justifyContent: "center",
-    alignItems: "center"
+    height: captureSize,
+    width: captureSize,
+    borderRadius: Math.floor(captureSize / 2),
+    marginHorizontal: 31,
   },
   closeButton: {
     position: "absolute",
@@ -207,37 +147,10 @@ const styles = StyleSheet.create({
     opacity: 0.7,
     zIndex: 2,
   },
-  media: {
-      ...StyleSheet.absoluteFillObject,
-  },
   closeCross: {
     width: "68%",
     height: 1,
     backgroundColor: "black",
-  },
-  controlForUpload: {
-    position: "relative",
-    flexDirection: "row",
-    top: 38,
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  control: {
-    position: "absolute",
-    flexDirection: "row",
-    bottom: 38,
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  captureButton: {
-    backgroundColor: "#f5f6f5",
-    borderRadius: 5,
-    height: captureSize,
-    width: captureSize,
-    borderRadius: Math.floor(captureSize / 2),
-    marginHorizontal: 31,
   },
   text: {
     color: "#fff",
