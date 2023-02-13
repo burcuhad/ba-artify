@@ -63,6 +63,7 @@
                 "name": "The Night Watch",
                 "painter": "Rembrandt van Rijn",
                 "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/The_Night_Watch_-_HD.jpg/1200px-The_Night_Watch_-_HD.jpg",
+                "info": "The Night Watch (Dutch: De Nachtwacht), is a 1642 painting by Rembrandt van Rijn. It is in the collection of the Amsterdam Museum but is prominently displayed in the Rijksmuseum as the best-known painting in its collection. The Night Watch is one of the most famous Dutch Golden Age paintings. The painting is famous for three things: its colossal size (363 by 437 centimetres (12 by 14+1⁄2 feet)), the dramatic use of light and shadow (tenebrism) and the perception of motion in what would have traditionally been a static military group portrait. The painting was completed in 1642, at the peak of the Dutch Golden Age. It depicts the eponymous company moving out, led by Captain Frans Banninck Cocq (dressed in black, with a red sash) and his lieutenant, Willem van Ruytenburch (dressed in yellow, with a white sash). With effective use of sunlight and shade, Rembrandt leads the eye to the three most important characters among the crowd: the two men in the centre (from whom the painting gets its original title), and the woman in the centre-left background carrying a chicken. Behind them, the company's colours are carried by the ensign, Jan Visscher Cornelissen. The figures are almost life-size.        Rembrandt has displayed the traditional emblem of the arquebusiers in a natural way, with the woman in the background carrying the main symbols. She is a kind of mascot herself; the claws of a dead chicken on her belt represent the clauweniers (arquebusiers), the pistol behind the chicken represents clover and she is holding the militia's goblet. The man in front of her is wearing a helmet with an oak leaf, a traditional motif of the arquebusiers. The dead chicken is also meant to represent a defeated adversary. The colour yellow is often associated with victory.",
                 "category": "Baroque"
             },
             {
@@ -94,6 +95,7 @@
                 "name": "Capo di Noli",
                 "painter": "Paul Signac",
                 "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Paul_Signac_-_Capo_di_Noli.jpg",
+                "info:": "Capo di Noli is an oil on canvas painting of 1898 by the French artist Paul Signac. It depicts a cape on the Italian Riviera, close to Genoa. Signac hiked there from Saint-Tropez two years before the painting was completed, and of his intentions he wrote he wanted to take every corner of the canvas to the absolute extreme in terms of colour ",
                 "category": "Neo-Impressionism"
             },
             {
@@ -113,6 +115,7 @@
                 "name": "Composition 8",
                 "painter": "Wassily Kandinsky",
                 "imageUrl": "https://k2k6p3n8.stackpathcdn.com/wp-content/uploads/2019/12/Wassily-Kandinksy-Komposition-VIII-1923.webp",
+                "info": "Kandinsky regarded Composition 8 as the high point of his postwar achievement. In this work circles, triangles, and linear elements create a surface of interacting geometric forms. The importance of circles in this painting foreshadows the dominant role they would play in many subsequent works.",
                 "category": "Expressionism",
                 "tutorial": "https://www.youtube.com/watch?v=KI-acYNqHa4"
             },

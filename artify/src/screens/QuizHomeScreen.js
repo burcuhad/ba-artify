@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";  
 import {Text, View, Image, Button, TouchableOpacity, StyleSheet} from "react-native";
 import QuizTemplate from "../components/QuizTemplate"
-import {getQuizData,addQuestions} from "../hooks/dto"
+import {getQuizData, addQuestions} from "../hooks/dto"
 
 
 export default function QuizHomeScreen({navigation}) {
@@ -10,6 +10,7 @@ export default function QuizHomeScreen({navigation}) {
 
 
     useEffect( () => {
+        //addQuestions()
         const fetchQuestions = async() => {
             setQuestions(await getQuizData());
         }
@@ -36,7 +37,7 @@ export default function QuizHomeScreen({navigation}) {
                     currentQuestionIndex: 0,
                     correctAnswersCount: 0
                 })}}>
-                <Text style = {styles.buttonText}> Start</Text>
+                <Text style = {styles.buttonText}> START</Text>
             </TouchableOpacity>
         </View>
     );
@@ -69,12 +70,12 @@ const styles = StyleSheet.create({
         marginBottom: 200
     },
     button: {
-        alignSelf: "center",
-        width: "100%",
-        backgroundColor: "#6B705C",
-        padding: 15,
-        borderRadius: 14,
-        marginBottom: 40
+        width: '100%',
+        backgroundColor: '#508CA4',
+        padding: 16,
+        borderRadius: 16,
+        alignItems: 'center',
+        marginBottom: 30,
     },
     buttonText: {
         fontSize: 20,

@@ -6,20 +6,30 @@ export default function QuizResultScreen({route,navigation}) {
 
     return (
         <View style = {styles.container}>
-            <View>
-                {
-                (par.correctAnswersCount > 1) ?
-                <Image source = {{uri: "https://upload.wikimedia.org/wikipedia/commons/f/fc/Happy_face.svg"}} />
-                :
-                <Image source = {{uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Face-sad.svg/640px-Face-sad.svg.png"}} />
+            <Text style = {styles.title}>RESULTS </Text>
+            <Text style={styles.scoreValue}> {par.correctAnswersCount} </Text>
+            <View style={styles.insideContainer}>
+                {(par.correctAnswersCount > 1) ? 
+                <Image 
+                    style={styles.imagePreview} 
+                    source={require('../image/success.png')}
+                    resizeMode="contain"  
+                />
+                : 
+                <Image 
+                    style={styles.imagePreview} 
+                    source = {{uri: "https://cdni.iconscout.com/illustration/free/thumb/concept-about-business-failure-1862195-1580189.png"}} 
+                    resizeMode="contain"
+                />
                 }
             </View>
+
             <View>
-                <Text>All done!</Text>
-            </View>
-            <View>
-                <TouchableOpacity onPress={() => {navigation.navigate("HomeGallery")}}>
-                    <Text> Back Home </Text>
+                <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate("HomeGallery")}}>
+                    <Text style={styles.buttonText}> GO TO HOME </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate("QuizHome")}}>
+                    <Text style={styles.buttonText}> GO TO QUIZ </Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -28,7 +38,40 @@ export default function QuizResultScreen({route,navigation}) {
 
 const styles = StyleSheet.create({
     container: {
-        marginLeft: 15,
-        marginRight: 15
-    }
+        paddingTop: 50,
+        paddingHorizontal: 20,
+        height: '100%',
+    },
+    insideContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      flex: 1,
+    },
+    imagePreview: {
+        height: 300,
+        width: 300,
+      },
+      button: {
+        width: '100%',
+        backgroundColor: '#508CA4',
+        padding: 16,
+        borderRadius: 16,
+        alignItems: 'center',
+        marginBottom: 30,
+      },
+      title: {
+        fontSize: 24,
+        fontWeight:'800',
+        alignSelf:'center'
+      },
+      buttonText: {
+        fontSize: 18,
+        fontWeight: '600',
+        color: 'white',
+      },
+      scoreValue:{
+        fontSize: 24,
+        fontWeight:'800',
+        alignSelf:'center'
+      }
 });

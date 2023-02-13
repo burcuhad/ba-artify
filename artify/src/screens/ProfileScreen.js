@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import React, { useEffect,useState} from "react";
 import {
     View,
@@ -20,7 +19,6 @@ export default function ProfileScreen({route}) {
     const [allPhotos, setAll] = useState([]);
 
     useEffect(() => {
-        
         fetchdata()
         initPaintings();
     }

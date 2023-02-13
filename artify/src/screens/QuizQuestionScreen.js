@@ -1,6 +1,6 @@
 import { async } from "@firebase/util";
 import React , { useEffect, useState } from "react";  
-import {Text, View, StyleSheet, TouchableOpacity, Image} from "react-native";
+import {Text, View, ScrollView, StyleSheet, TouchableOpacity, Image} from "react-native";
 
 export default function QuizQuestionScreen({route, navigation}) {
     const [isAnsCorrect, setIsAnsCorrect] = useState(-1);
@@ -30,7 +30,7 @@ export default function QuizQuestionScreen({route, navigation}) {
     }
 
     return (
-        <View style = {styles.container}>
+        <ScrollView style = {styles.container}>
             <Image
             style={styles.imageHome}
             source={{uri: currentQuestion.imageUrl }}
@@ -39,16 +39,28 @@ export default function QuizQuestionScreen({route, navigation}) {
                 <Text style = {styles.question}> {currentQuestion.q} </Text>
             </View>
             <View style = {styles.answerOptions}>
-                <TouchableOpacity style = {selectedAnswer=== 1 ? styles.selectedAnswerButton : styles.answerButton} onPress={() =>{ isAnswerCorrect(currentQuestion.a, currentQuestion.o_1), change(1)  }}> 
+                <TouchableOpacity
+                    style = {selectedAnswer=== 1 ? styles.selectedAnswerButton : styles.answerButton} 
+                    onPress={() =>{ isAnswerCorrect(currentQuestion.a, currentQuestion.o_1), change(1)  }}
+                > 
                     <Text style = {styles.answerOption}> {currentQuestion.o_1} </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style = {selectedAnswer=== 2 ? styles.selectedAnswerButton : styles.answerButton} onPress={() =>{ isAnswerCorrect(currentQuestion.a, currentQuestion.o_2), change(2)  }}> 
+                <TouchableOpacity 
+                    style = {selectedAnswer=== 2 ? styles.selectedAnswerButton : styles.answerButton} 
+                    onPress={() =>{ isAnswerCorrect(currentQuestion.a, currentQuestion.o_2), change(2)  }}
+                > 
                     <Text style = {styles.answerOption}> {currentQuestion.o_2} </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style = {selectedAnswer=== 3 ? styles.selectedAnswerButton : styles.answerButton} onPress={() =>{ isAnswerCorrect(currentQuestion.a, currentQuestion.o_3), change(3)  }}> 
+                <TouchableOpacity 
+                    style = {selectedAnswer=== 3 ? styles.selectedAnswerButton : styles.answerButton} 
+                    onPress={() =>{ isAnswerCorrect(currentQuestion.a, currentQuestion.o_3), change(3)  }}
+                > 
                     <Text style = {styles.answerOption}> {currentQuestion.o_3} </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style = {selectedAnswer=== 4 ? styles.selectedAnswerButton : styles.answerButton} onPress={() =>{ isAnswerCorrect(currentQuestion.a, currentQuestion.o_4), change(4)  }}> 
+                <TouchableOpacity 
+                    style = {selectedAnswer=== 4 ? styles.selectedAnswerButton : styles.answerButton} 
+                    onPress={() =>{ isAnswerCorrect(currentQuestion.a, currentQuestion.o_4), change(4)  }}
+                > 
                     <Text style = {styles.answerOption}> {currentQuestion.o_4} </Text>
                 </TouchableOpacity>
                 <Text>Current correct {par.correctAnswersCount }</Text>
@@ -84,7 +96,7 @@ export default function QuizQuestionScreen({route, navigation}) {
                 
                 {/**/}
             </View>
-        </View> 
+        </ScrollView> 
     );
 };
 //TODO when alle fragen sind fertig allQuestions.lengt-1 <= par.currentQuestionIndex
@@ -124,7 +136,7 @@ const styles = StyleSheet.create({
     answerButton: {
         paddingVertical: 10,
         marginVertical: 2,
-        backgroundColor: "#DDBEA9",
+        backgroundColor: "#bdc9a3",
         paddingHorizontal: 12,
         borderRadius: 12,
         fontWeight: "400"
@@ -132,16 +144,16 @@ const styles = StyleSheet.create({
     selectedAnswerButton: {
         paddingVertical: 10,
         marginVertical: 2,
-        backgroundColor: "#b3866f",
+        backgroundColor: "#87A878",
         paddingHorizontal: 12,
         borderRadius: 12,
         fontWeight: "400"
     },   
     button: {
         alignItems: "center",
-        backgroundColor: "#6B705C",
-        padding: 12,
-        paddingHorizontal: 15,
+        backgroundColor: "#508CA4",
+        padding: 15,
+        paddingHorizontal: 25,
         borderRadius: 14,
         marginBottom: 30
     },
