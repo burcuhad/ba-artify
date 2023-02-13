@@ -2,13 +2,6 @@ import { initializeApp, getApp} from 'firebase/app';
 import { getAuth } from "firebase/auth";
 import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 
-// Optionally import the services that you want to use
-// import {...} from "firebase/auth";
-// import {...} from "firebase/database";
-// import {...} from "firebase/firestore";
-// import {...} from "firebase/functions";
-// import {...} from "firebase/storage";
-
 // Initialize Firebase
 
 const firebaseConfig = {
@@ -29,8 +22,6 @@ try {
 
 export const auth = getAuth(firebaseApp);
 export const db = getFirestore(firebaseApp);
-
-const colRef = collection(db, "paintings");
 
 // For more information on how to access Firebase in your project,
 // see the Firebase documentation: https://firebase.google.com/docs/web/setup#access-firebase

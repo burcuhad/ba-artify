@@ -5,7 +5,6 @@ import ResultsDetail from "../components/ResultsDetail";
 export default function ResultsPaintingShowScreen({route, navigation}) {
   const painting = route.params;
 
-
   return (
   <ScrollView style= {styles.container}>
     <ResultsDetail result={painting.item} list={false}/>

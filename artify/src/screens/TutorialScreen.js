@@ -1,11 +1,9 @@
 import React from "react";  
-import {Text, View, StyleSheet, ScrollView} from "react-native";
-import YoutubePlayer from 'react-native-youtube-iframe';
+import {View, StyleSheet} from "react-native";
 import WebView from "react-native-webview";
 
-export default function TutorialScreen({route, navigation}) {
+export default function TutorialScreen({route}) {
     const painting = route.params;
-
 
     return (
         <View style = {styles.container}>
@@ -18,7 +16,6 @@ export default function TutorialScreen({route, navigation}) {
         </View>
     );
 }
-
 
 const styles = StyleSheet.create({
     container: {

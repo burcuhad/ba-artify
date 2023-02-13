@@ -3,9 +3,10 @@ import {Text, Image, View, SafeAreaView, Button, TouchableOpacity,Dimensions, St
 import { Camera } from 'expo-camera';
 import { shareAsync } from 'expo-sharing';
 import * as MediaLibrary from 'expo-media-library'
-import dto from "../hooks/dto";
+import {savePhotoDB} from "../hooks/dto";
 
-export default function CameraScreen({navigation}) {
+export default function CameraScreen({route, navigation}) {
+  const currentPainting = route.params.item;
 
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState(null);
@@ -14,7 +15,6 @@ export default function CameraScreen({navigation}) {
   const [photo, setPhoto] = useState(null);
   const cameraRef = useRef();
 
-  const [insert, selectPaintings, getPaintings, savePhotoDB] = dto();
 
   const permisionFunction = async () => {
     const cameraPermission = await Camera.requestCameraPermissionsAsync();
@@ -57,17 +57,20 @@ export default function CameraScreen({navigation}) {
     };
 
     const savePhoto = async () => {
-      MediaLibrary.saveToLibraryAsync(photo.uri);
-      //savePhotoDB(photo.uri);
-
+      await MediaLibrary.saveToLibraryAsync(photo.uri);
+      
       Alert.alert("Saved in device camera roll!")
     };
 
     return (
       <SafeAreaView style={styles.container}>
-        <Image style={styles.previewImage} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />
+        <Image style={styles.previewImage} source={{ uri: photo.uri }} />
         <Button title="Share" onPress={sharePhoto}/>
-        <Button title="Upload" onPress={() => navigation.navigate("Profile", "okko")}/>
+        <Button title="Upload" onPress={() => {
+          navigation.navigate("Profile", photo)
+          console.log(currentPainting)
+          savePhotoDB(photo.uri, currentPainting.name, 1);
+        }}/>
         {hasMediaLibraryPermission ? <Button title="Save in Camera Roll" onPress={savePhoto}/> : undefined}
         <TouchableOpacity onPress={() => setPhoto(undefined)} style={styles.closeButton}>
         <View style={[styles.closeCross, { transform: [{ rotate: "45deg" }] }]} />

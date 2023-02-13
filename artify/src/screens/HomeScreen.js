@@ -3,17 +3,13 @@ import {Text, View, StyleSheet, Button, FlatList, Image, ScrollView} from "react
 import SearchBar from "../components/SearchBar";
 import useResultPaintings from "../hooks/useResultPaintings";
 import ResultPaintingsList from "../components/ResultPaintingsList";
-import auth from "../../firebaseConfig";
-import dto from "../hooks/dto";
 
 export default function HomeScreen({navigation}) {
-  const [term, setTerm] = useState("");
-  const [getDataApi, results, errorMessage] = useResultPaintings();
-
-  const [insert, selectPaintings, getPaintings] = dto();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPaintings, getCurrentPaintings, errorMessage] = useResultPaintings();
 
   const filterResultsByCategory = (category) => {
-    return results.filter(result => {
+    return currentPaintings.filter(result => {
       return result.category === category;
     });
   };
@@ -21,9 +17,9 @@ export default function HomeScreen({navigation}) {
   return (
     <>
       <SearchBar 
-        term = {term} 
-        onTermChange = {newTerm => {setTerm(newTerm); getDataApi(newTerm) }} 
-        onTermSubmit = {() => getDataApi(term)}
+        term = {searchTerm} 
+        onTermChange = {newTerm => {setSearchTerm(newTerm); getCurrentPaintings(newTerm) }} 
+        onTermSubmit = {() => getCurrentPaintings(searchTerm)}
       />
       {errorMessage ? <Text> {errorMessage} </Text> : null}
 

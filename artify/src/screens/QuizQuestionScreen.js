@@ -1,58 +1,93 @@
-import React , { useEffect } from "react";  
+import { async } from "@firebase/util";
+import React , { useEffect, useState } from "react";  
 import {Text, View, StyleSheet, TouchableOpacity, Image} from "react-native";
-import QuizTemplate from "../components/QuizTemplate"
-import dto from "../hooks/dto";
 
-export default function QuizQuestionScreen({navigation}) {
-    
-  const [insert, selectPaintings, getPaintings] = dto();
+export default function QuizQuestionScreen({route, navigation}) {
+    const [isAnsCorrect, setIsAnsCorrect] = useState(-1);
+    const [selectedAnswer, setSelectedAnswer] = useState(0);
 
-    const getQuiz = async() => {
+    const par = route.params
+    const currentQuestion = par.allQuestions[par.currentQuestionIndex]
 
-    };
-
-    useEffect(() => {
-        getQuiz();
+    const isAnswerCorrect = (a,b) => {
+        console.log("answer", a,b)
+        //if (isAnsCorrect === -1) {
+            if (a === b ){
+                setIsAnsCorrect(1)
+            }else {
+                setIsAnsCorrect(0)
+            }
+        //}
+    }
+    useEffect( () => {
+        setIsAnsCorrect(-1)
     }, []);
+
+    console.log("isAns", isAnsCorrect)
+
+    const change = (newAnswer) => {
+       setSelectedAnswer(newAnswer);
+    }
 
     return (
         <View style = {styles.container}>
             <Image
             style={styles.imageHome}
-            source={{uri: "https://duquets.files.wordpress.com/2011/12/art-history-collage.jpg"}}
+            source={{uri: currentQuestion.imageUrl }}
             />
             <View style={styles.containerTop}> 
-                <Text style = {styles.question}> This the question </Text>
+                <Text style = {styles.question}> {currentQuestion.q} </Text>
             </View>
             <View style = {styles.answerOptions}>
-                <TouchableOpacity style = {styles.answerButton}> 
-                    <Text style = {styles.answerOption}> Option 1 </Text>
+                <TouchableOpacity style = {selectedAnswer=== 1 ? styles.selectedAnswerButton : styles.answerButton} onPress={() =>{ isAnswerCorrect(currentQuestion.a, currentQuestion.o_1), change(1)  }}> 
+                    <Text style = {styles.answerOption}> {currentQuestion.o_1} </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style = {styles.answerButton}> 
-                    <Text style = {styles.answerOption}> Option 1 </Text>
+                <TouchableOpacity style = {selectedAnswer=== 2 ? styles.selectedAnswerButton : styles.answerButton} onPress={() =>{ isAnswerCorrect(currentQuestion.a, currentQuestion.o_2), change(2)  }}> 
+                    <Text style = {styles.answerOption}> {currentQuestion.o_2} </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style = {styles.answerButton}> 
-                    <Text style = {styles.answerOption}> Option 1 </Text>
+                <TouchableOpacity style = {selectedAnswer=== 3 ? styles.selectedAnswerButton : styles.answerButton} onPress={() =>{ isAnswerCorrect(currentQuestion.a, currentQuestion.o_3), change(3)  }}> 
+                    <Text style = {styles.answerOption}> {currentQuestion.o_3} </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style = {styles.answerButton}> 
-                    <Text style = {styles.answerOption}> Option 1 </Text>
+                <TouchableOpacity style = {selectedAnswer=== 4 ? styles.selectedAnswerButton : styles.answerButton} onPress={() =>{ isAnswerCorrect(currentQuestion.a, currentQuestion.o_4), change(4)  }}> 
+                    <Text style = {styles.answerOption}> {currentQuestion.o_4} </Text>
                 </TouchableOpacity>
+                <Text>Current correct {par.correctAnswersCount }</Text>
             </View>
             <View style={styles.containerBottom}>
-                <TouchableOpacity style = {styles.button}> 
-                    <Text style = {styles.buttonText}> Previous </Text>
-                </TouchableOpacity>                
-                <TouchableOpacity style = {styles.button}> 
-                    <Text style = {styles.buttonText}> Next </Text>
-                </TouchableOpacity>
                 {/*<TouchableOpacity style = {styles.button}> 
-                    <Text style = {styles.buttonText}> End </Text>
-                </TouchableOpacity>*/}
+                    <Text style = {styles.buttonText}> Previous </Text>
+    </TouchableOpacity>   */}
+                {((par.allQuestions.length -1) === par.currentQuestionIndex)
+                    ?
+                    <TouchableOpacity 
+                        style = {styles.button}
+                        onPress={() => {
+                            navigation.navigate("QuizResult",{allQuestions: par.allQuestions, correctAnswersCount : par.correctAnswersCount})}
+                        }
+                    > 
+                        <Text style = {styles.buttonText}> End </Text>
+                    </TouchableOpacity>
+                    :
+                    <TouchableOpacity 
+                        style = {styles.button}
+                        onPress={() => {
+                            setIsAnsCorrect(-1)
+                            navigation.navigate("QuizQuestion", {
+                            allQuestions : par.allQuestions,
+                            currentQuestionIndex: par.currentQuestionIndex + 1,
+                            correctAnswersCount: par.correctAnswersCount + isAnsCorrect
+                        })}}
+                    > 
+                        <Text style = {styles.buttonText}> Next </Text>
+                    </TouchableOpacity>
+                }             
+                
+                {/**/}
             </View>
         </View> 
     );
 };
-
+//TODO when alle fragen sind fertig allQuestions.lengt-1 <= par.currentQuestionIndex
 const styles = StyleSheet.create({
     container: {
         marginVertical: 20,
@@ -65,7 +100,7 @@ const styles = StyleSheet.create({
     containerBottom: {
         marginBottom: 12,
         paddingVertical: 14,
-        justifyContent: "space-between",
+        justifyContent: "flex-end",
         flexDirection: "row"
     },
     imageHome: {
@@ -89,11 +124,19 @@ const styles = StyleSheet.create({
     answerButton: {
         paddingVertical: 10,
         marginVertical: 2,
-        backgroundColor: "#CB997E",
+        backgroundColor: "#DDBEA9",
         paddingHorizontal: 12,
         borderRadius: 12,
         fontWeight: "400"
-    },     
+    },  
+    selectedAnswerButton: {
+        paddingVertical: 10,
+        marginVertical: 2,
+        backgroundColor: "#b3866f",
+        paddingHorizontal: 12,
+        borderRadius: 12,
+        fontWeight: "400"
+    },   
     button: {
         alignItems: "center",
         backgroundColor: "#6B705C",

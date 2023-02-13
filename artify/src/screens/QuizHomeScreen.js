@@ -1,8 +1,20 @@
-import React, { useState } from "react";  
+import React, { useState, useEffect } from "react";  
 import {Text, View, Image, Button, TouchableOpacity, StyleSheet} from "react-native";
 import QuizTemplate from "../components/QuizTemplate"
+import {getQuizData,addQuestions} from "../hooks/dto"
+
 
 export default function QuizHomeScreen({navigation}) {
+
+    const [allQuestions, setQuestions] = useState([]);
+
+
+    useEffect( () => {
+        const fetchQuestions = async() => {
+            setQuestions(await getQuizData());
+        }
+        fetchQuestions()
+    }, []);
 
     return (
         <View style = {styles.container}>
@@ -19,7 +31,11 @@ export default function QuizHomeScreen({navigation}) {
             </View>
             <TouchableOpacity 
                 style= {styles.button} 
-                onPress={() => {navigation.navigate("QuizQuestion")}}>
+                onPress={() => {navigation.navigate("QuizQuestion", {
+                    allQuestions : allQuestions,
+                    currentQuestionIndex: 0,
+                    correctAnswersCount: 0
+                })}}>
                 <Text style = {styles.buttonText}> Start</Text>
             </TouchableOpacity>
         </View>

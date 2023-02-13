@@ -7,7 +7,7 @@ export default function ResultPaintingsList({ title, results, navigation }) {
     if (!results.length) {
         return null;
     }
-    
+    //console.log("res",results)
     return (
         <View style = {styles.container}>
             <Text style={styles.title}> {title} </Text>
@@ -24,7 +24,7 @@ export default function ResultPaintingsList({ title, results, navigation }) {
                     )
                 }}
             />        
-</View>
+        </View>
     );
 };
 
