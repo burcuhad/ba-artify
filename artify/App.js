@@ -11,8 +11,9 @@ import ProfileScreen from './src/screens/ProfileScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import CameraScreen from './src/screens/CameraScreen'
 import QuizResultScreen from './src/screens/QuizResultScreen';
+import ProfileShowSingleScreen from './src/screens/ProfileShowSingleScreen';
 
-//TODO 
+//TODO delete works second time, force useeffect?
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -34,8 +35,9 @@ export default function App() {
         <Stack.Screen options={{headerShown: false}} name="Drawer2" component={DrawerRoutes} />
         <Stack.Screen name="Tutorial" component={TutorialScreen} options = {{ title: ' ' }}/>
         <Stack.Screen name="ResultsShow" options={{ title: ' ' }} component={ResultPaintingShowScreen} />
-        <Stack.Screen name='CameraScreen' component={CameraScreen} options = {{ title: ' ' }}/>
-        <Stack.Screen name='Profile' component={ProfileScreen}/>
+        <Stack.Screen name='CameraScreen' component={CameraScreen} options = {{ title: ' ', headerShown: false}}/>
+        <Stack.Screen name='Profile' component={ProfileScreen} options = {{ headerShown: true}} />
+        <Stack.Screen name='ProfileShowSingle' component={ProfileShowSingleScreen} options = {{ headerShown: false}} />
         <Stack.Screen name='QuizQuestion' component={QuizQuestionScreen} options = {{ headerShown: false} }/>
         <Stack.Screen name='QuizResult' component={QuizResultScreen} options = {{ headerShown: false} }/>
       </Stack.Navigator>

@@ -62,16 +62,28 @@ export default function CameraScreen({route, navigation}) {
       Alert.alert("Saved in device camera roll!")
     };
 
+    const postPhoto = async () => {
+      console.log(currentPainting)
+      savePhotoDB(photo.uri, currentPainting.name, 1);
+      Alert.alert("Posted on profile!")
+    };
+
     return (
       <SafeAreaView style={styles.container}>
         <Image style={styles.previewImage} source={{ uri: photo.uri }} />
-        <Button title="Share" onPress={sharePhoto}/>
-        <Button title="Upload" onPress={() => {
-          navigation.navigate("Profile", photo)
-          console.log(currentPainting)
-          savePhotoDB(photo.uri, currentPainting.name, 1);
+        <Button title="Share" 
+          onPress={sharePhoto}/>
+        <Button title="Post" 
+          onPress={() => {
+          //navigation.navigate("Profile", photo)
+          /*console.log(currentPainting)
+          savePhotoDB(photo.uri, currentPainting.name, 1);*/
+          postPhoto();
         }}/>
-        {hasMediaLibraryPermission ? <Button title="Save in Camera Roll" onPress={savePhoto}/> : undefined}
+        {hasMediaLibraryPermission ? 
+          <Button title="Save in Camera Roll" 
+            onPress={savePhoto}
+          /> : undefined}
         <TouchableOpacity onPress={() => setPhoto(undefined)} style={styles.closeButton}>
         <View style={[styles.closeCross, { transform: [{ rotate: "45deg" }] }]} />
         <View style={[styles.closeCross, { transform: [{ rotate: "-45deg" }] }]} />

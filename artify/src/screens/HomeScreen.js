@@ -3,6 +3,7 @@ import {Text, View, StyleSheet, Button, FlatList, Image, ScrollView} from "react
 import SearchBar from "../components/SearchBar";
 import useResultPaintings from "../hooks/useResultPaintings";
 import ResultPaintingsList from "../components/ResultPaintingsList";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function HomeScreen({navigation}) {
   const [searchTerm, setSearchTerm] = useState("");

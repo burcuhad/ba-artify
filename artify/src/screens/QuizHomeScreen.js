@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";  
 import {Text, View, Image, Button, TouchableOpacity, StyleSheet} from "react-native";
-import QuizTemplate from "../components/QuizTemplate"
-import {getQuizData, addQuestions} from "../hooks/dto"
-
+import {getQuizData, setQuizData} from "../hooks/dto"
 
 export default function QuizHomeScreen({navigation}) {
-
     const [allQuestions, setQuestions] = useState([]);
 
-
     useEffect( () => {
-        //addQuestions()
+        //setQuizData()
         const fetchQuestions = async() => {
             setQuestions(await getQuizData());
         }

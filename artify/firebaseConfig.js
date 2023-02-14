@@ -1,9 +1,8 @@
-import { initializeApp, getApp} from 'firebase/app';
+import { initializeApp, getApp } from 'firebase/app';
 import { getAuth } from "firebase/auth";
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+import { getFirestore } from 'firebase/firestore/lite';
 
 // Initialize Firebase
-
 const firebaseConfig = {
     apiKey: "AIzaSyC746m5DqFrMm6Ng6bNS9m3B-84lf7-rqA",
     authDomain: "artify-app-e0add.firebaseapp.com",
@@ -12,6 +11,7 @@ const firebaseConfig = {
     messagingSenderId: "774599241080",
     appId: "1:774599241080:web:7695425c2e80437aea2c8d"
 };
+
 console.log("hello firebase")
 
 try {

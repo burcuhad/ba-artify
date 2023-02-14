@@ -14,6 +14,7 @@ export default function ResultPaintingsList({ title, results, navigation }) {
             <FlatList
                 horizontal
                 showsHorizontalScrollIndicator = {false}
+                showsVerticalScrollIndicator = {false}
                 data={results}
                 keyExtractor={(painting) => painting.name}
                 renderItem = {({item}) => {

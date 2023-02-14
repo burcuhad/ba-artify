@@ -1,32 +1,12 @@
-
 import { async } from "@firebase/util";
-import { addDoc, collection, setDoc ,getDocs, query, where} from "firebase/firestore"; 
+import { addDoc, deleteDoc, collection, setDoc ,getDocs, query, where} from "firebase/firestore"; 
 import { getFirestore } from 'firebase/firestore'
-
 import db from "../../firebaseConfig"
 
-
-
-    
-
-    function insert () {
-        const db = getFirestore();
-        
-    }
-
-
-    export function savePhotoDB(uri, paintingName, userId) {
-        const db = getFirestore();
-        
-        addDoc(collection(db, "savedPhotos"), {
-            imageUrl: uri,
-            painting_name: paintingName,
-            user_id: userId,  
-        })       
-    }
-
-    // Get a list of cities from your database
-    export async function getPaintings () {
+    /**
+     * @returns all paintings from "paintings" collection in firebase database 
+     */
+    export async function getPaintings() {
         const db = getFirestore();
 
         const querySnapshot = await getDocs(collection(db, "paintings"));
@@ -37,8 +17,13 @@ import db from "../../firebaseConfig"
         //console.log(allPaintings)
        return allPaintings;
     }
-
-    export async function selectProfilePaintings(userId) {
+    
+    /**
+     * 
+     * @param {*} userId 
+     * @returns all camera captured paintings from the given user
+     */
+    export async function getCapturedUserProfilePaintings(userId) {
         const db = getFirestore();
         const q = query(collection(db, "savedPhotos"), where("user_id", "==", userId));
         const querySnapshot = await getDocs(q);
@@ -50,33 +35,60 @@ import db from "../../firebaseConfig"
         return profilePaintings;
     }
 
-    export function selectReferencePainting(paintigName) {
+    export function getReferencePainting(paintigName) {
         const db = getFirestore();
         const q = query(collection(db, "paintings"), where("name", "==", paintigName));
         return  getDocs(q).then(
             quer =>{
                 const b = []
                 quer.forEach((doc) => {
-                    const a = {painting_name: doc.data().name,imageUrl: doc.data().imageUrl } 
+                    const a = {painting_name: doc.data().name,imageUrl: doc.data().imageUrl} 
                     b.push(a)
                 });
                 return b[0]
             }
         );
     }
-    export async function getQuizData(){
+
+    /**
+     * saves user captured photo to "savedPhotos" collection in firebase database
+     * @param {*} uri is the location of the camera captured photo on the phone 
+     * @param {*} paintingName is the original name of the painting that is captured 
+     * @param {*} userId 
+     */
+    export function savePhotoDB(uri, paintingName, userId) {
+        const db = getFirestore();
+        
+        addDoc(collection(db, "savedPhotos"), {
+            imageUrl: uri,
+            painting_name: paintingName,
+            user_id: userId,  
+        });   
+    }
+    
+    /**
+     * deletes captured photo from the "savedPhotos" collection in database and from the user profile
+     * @param {*} imageUrl is the location of the photo on the phone to be deleted
+     */
+    export async function deletePhotoDB(imageUrl) {
         const db = getFirestore();
 
-        const querySnapshot = await getDocs(collection(db, "questions"));
-        let allQuestions = []
-        querySnapshot.forEach((doc) => {
-            allQuestions.push(doc.data())
+        const d = query(collection(db, "savedPhotos"), where("imageUrl", "==", imageUrl));
+        const docSnap = await getDocs(d);
+
+        docSnap.forEach((doc) => {
+            deleteDoc(doc.ref).then(() => {
+                console.log("Entire Document has been deleted successfully.")
+            }).catch(error => {
+                console.log("error with delete ", error );
+            });
         });
-        //console.log(allPaintings)
-       return allQuestions;
     }
 
-    export function addQuestions(){
+    /**
+     *     * adds quiz test questions to firebase database to "questions" collection
+     */
+    export function setQuizData() {
         const db = getFirestore();
         const questions = [
             {
@@ -118,4 +130,17 @@ import db from "../../firebaseConfig"
         }
     }
 
+    /**
+     * @returns the quiz questions from the "questions" collection from firebase database
+     */
+    export async function getQuizData() {
+        const db = getFirestore();
 
+        const querySnapshot = await getDocs(collection(db, "questions"));
+        let allQuestions = []
+        querySnapshot.forEach((doc) => {
+            allQuestions.push(doc.data())
+        });
+        //console.log(allPaintings)
+        return allQuestions;
+    }

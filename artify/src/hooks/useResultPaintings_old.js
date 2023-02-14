@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react"; 
 import ax from "../api/ax";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function useResultPaintings() {
     const [results, setResults] = useState([]);
