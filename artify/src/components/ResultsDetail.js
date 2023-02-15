@@ -17,7 +17,7 @@ export default function ResultsDetail({result, list}) {
               style = {styles.name}
             >{result.name}</Text>
           </View>
-          <Text >{result.painter}</Text>
+          <Text>{result.painter}</Text>
         </View>
 
       </View>
