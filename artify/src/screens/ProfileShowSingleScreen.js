@@ -8,6 +8,8 @@ import {
   Alert
 } from "react-native";
 
+import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { shareAsync } from 'expo-sharing';
 import { deletePhotoDB } from "../hooks/dto";
@@ -21,8 +23,25 @@ export default function ProfileShowSingleScreen({route, navigation}) {
     shareAsync(painting.item.imageUrl);
   };
 
+  const AsyncAlert = (title, msg) => new Promise((resolve) => {
+    Alert.alert(
+      title,
+      msg,
+      [
+        {
+          text: 'ok',
+          onPress: () => {
+            resolve('YES');
+          },
+        },
+      ],
+      { cancelable: false },
+    );
+  })
+
   const deleteImage = async() => {
     //Alert.alert("Delete this post from your profile?");
+    await AsyncAlert()
     await deletePhotoDB(painting.item.imageUrl)
   };
 
@@ -34,17 +53,19 @@ export default function ProfileShowSingleScreen({route, navigation}) {
           source={{uri: painting.item.imageUrl}}
         />
         
+        {painting.item.user_id ? 
           <View style={styles.control}>
-            <AntDesign name="sharealt" size={24} color="black" 
+            <FontAwesome5 name="share-alt" size={24} color="black" 
               onPress={() => shareImage()} 
             />
-            <AntDesign name="delete" size={24} color="black" 
+            <Ionicons name="ios-trash-bin-sharp" size={24} color="black" 
               onPress={() => {
                 deleteImage() 
                 navigation.navigate("Profile") 
               }}
             />
           </View>
+        : null}
         </View>
     );
 }
@@ -54,16 +75,18 @@ const deviceWidth = Dimensions.get("window").width;
 const styles = StyleSheet.create({
   container: {
     paddingTop: 20,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   control: {
+    marginTop: 20,
     marginBottom: 12,
     paddingHorizontal: 50,
-    paddingVertical: 45,
+    padding: 20,
     flexDirection: "row",
     width: "100%",
     justifyContent: "space-between",
-    flexDirection: "row"
+    backgroundColor: "#E5E4E2",
+    borderRadius: 15,
   },
   containerImage: {
       resizeMode: "contain"

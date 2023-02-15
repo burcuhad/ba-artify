@@ -9,11 +9,11 @@ export default function ResultPaintingsList({ title, results, navigation }) {
     }
     //console.log("res",results)
     return (
-        <View style = {styles.container}>
-            <Text style={styles.title}> {title} </Text>
+        <View style = {styles.container} showsHorizantalScrollIndicator={false}>
+            <Text style={styles.title}>{title} </Text>
             <FlatList
                 horizontal
-                showsHorizontalScrollIndicator = {false}
+                showsHorizantalScrollIndicator = {false}
                 showsVerticalScrollIndicator = {false}
                 data={results}
                 keyExtractor={(painting) => painting.name}
@@ -31,7 +31,8 @@ export default function ResultPaintingsList({ title, results, navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        marginBottom: 10
+        marginBottom: 10,
+        //paddingBottom: 10,
     },
     title: {
         fontSize: 18, 

@@ -1,6 +1,7 @@
 import React, { useEffect,useState } from "react";
 import {
     View,
+    SafeAreaView,
     Image,
     Text,
     FlatList,
@@ -15,12 +16,26 @@ export default function ProfileScreen({navigation}) {
 
     useEffect(() => {
         console.log("profile useEffect called");
+
+        async function fetchUserData() {
+            setAllUserProfilePaintings(await getCapturedUserProfilePaintings(1));
+        }
+    
+        async function fetchUserData() {
+            setAllUserProfilePaintings(await getCapturedUserProfilePaintings(1));
+        }
+
+        const initPaintings = async() => {
+            console.log("inside init paintings in profile: ");
+            const allPaintingsCollection = await getPaintings();
+            setAllPaintings(allPaintingsCollection);
+        }
+
         fetchUserData()
         initPaintings();
-    }
-    , []);
+    }, []);
 
-    async function fetchUserData() {
+    /*async function fetchUserData() {
         setAllUserProfilePaintings(await getCapturedUserProfilePaintings(1));
     }
 
@@ -28,7 +43,7 @@ export default function ProfileScreen({navigation}) {
         console.log("inside init paintings in profile: ");
         const allPaintingsCollection = await getPaintings();
         setAllPaintings(allPaintingsCollection);
-    } 
+    } */
 
     const filterResultsByName =  (allUserProfilePaintings, paintingName, allPaintings) => {
         const referencedUserCapturedPainting = allUserProfilePaintings.filter(result => {
@@ -44,16 +59,16 @@ export default function ProfileScreen({navigation}) {
         })
         //console.log("referencedOriginalPaintings: ", referencedOriginalPaintings)
         return referencedOriginalPaintings.concat(referencedUserCapturedPainting)
-        };
+    };
     
     return (
-        <View style = {styles.container}>
+        <SafeAreaView style = {{marginBottom: 60}}>   
             <Text style={styles.text}>You have {Array.from(new Set(allUserProfilePaintings.map(item => item.painting_name))).map(item => {return {name: item}}).length}/{allPaintings.length} try to catch it all! </Text>
             <FlatList
                 vertical
                 showsHorizontalScrollIndicator = {false}
                 showsVerticalScrollIndicator = {false}
-                data={ Array.from(new Set(allUserProfilePaintings.map(item => item.painting_name))).map(item => {return {name: item}})}                
+                data = { Array.from(new Set(allUserProfilePaintings.map(item => item.painting_name))).map(item => {return {name: item}})}                
                 keyExtractor={(item) => item.name}
                 renderItem = {({item}) => {
                     return (
@@ -68,7 +83,7 @@ export default function ProfileScreen({navigation}) {
                                 renderItem = {({item}) => {
                                     return (
                                         <TouchableOpacity onPress={() => navigation.navigate("ProfileShowSingle", {item : item})}>
-                                            <View style = {styles.container}>
+                                            <View style = {styles.imageContainer}>
                                                 <Image style={styles.imageList} source={{ uri: item.imageUrl }} />
                                             </View>
                                         </TouchableOpacity>
@@ -78,42 +93,37 @@ export default function ProfileScreen({navigation}) {
                         </View> 
                     )
                 }}
-            />       
-        </View>
+            />  
+            </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        marginBottom: 10,
-        paddingTop: 10,
-        paddingHorizontal: 10,
-        paddingBottom: 30,
+        marginBottom: 20,
+        backgroundColor: "pink"
+    },
+    imageContainer: {
+        marginHorizontal: 15,
     },
     title: {
-        fontSize: 18, 
+        fontSize: 15, 
         fontWeight: "bold",
         marginLeft: 15,
-        marginBottom: 5
+        marginVertical: 10
     },
     text: {
         alignSelf: "center",
         fontWeight: "bold",
         color: "#CB997E",
         fontSize: 20,
-        marginBottom: 30
-    },
-    imageHome: {
-        alignself:"center",
-        width: "100%",
-        height: undefined,
-        aspectRatio: 1,
+        marginTop: 10,
+        marginBottom: 10
     },
       imageList: {
-          width: 250,
-          height: 200,
-          borderRadius: 4,
-          marginBottom: 5
+        width: 250,
+        height: 200,
+        borderRadius: 4,
       },
 });
    

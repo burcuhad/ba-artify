@@ -1,30 +1,51 @@
 import React from "react";  
-import {Text, View, StyleSheet, FlatList, Image} from "react-native";
+import {Text, View, StyleSheet, Image} from "react-native";
 
 export default function ResultsDetail({result, list}) {
     return (
-      <View style = {styles.container}>
+      <View style = {styles.container}> 
         <Image
-          //resizeMode={list ? undefined: "contain"}
           style={list ? styles.imageList: styles.imageSingle}
           source={{uri: result.imageUrl}}
         />
-        <Text style = {styles.name}> {result.name} </Text>
-        <Text > {result.painter} </Text>
+        <View 
+        style={list ? styles.textContainer: styles.textContainerSingle} >
+          <View style = {styles.paintingTextContainer}>
+            <Text 
+              //numberOfLines={1}
+              //adjustsFontSizeToFit={true} 
+              style = {styles.name}
+            >{result.name}</Text>
+          </View>
+          <Text >{result.painter}</Text>
+        </View>
+
       </View>
     );
 };
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 20,
-    paddingHorizontal: 20
+    paddingTop: 5,
+    paddingHorizontal: 15,
+  },
+  imageContainer: {
+    width: 250,
+  },  
+  textContainer: {
+    width: 250,
+  },
+  textContainerSingle: {
+    //width: 250,
+  },
+  paintingTextContainer: {
+    //height: 30,
   },
   imageList: {
-      width: 250,
-      height: 200,
-      borderRadius: 4,
-      marginBottom: 5
+    width: 250,
+    height: 200,
+    borderRadius: 4,
+    marginBottom: 5,
   },
   imageSingle: {
     alignself:"center",

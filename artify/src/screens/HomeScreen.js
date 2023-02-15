@@ -1,9 +1,8 @@
-import React, {useState, useEffect} from "react";  
-import {Text, View, StyleSheet, Button, FlatList, Image, ScrollView} from "react-native";
+import React, { useState } from "react";  
+import {Text, Button, ScrollView} from "react-native";
 import SearchBar from "../components/SearchBar";
 import useResultPaintings from "../hooks/useResultPaintings";
 import ResultPaintingsList from "../components/ResultPaintingsList";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function HomeScreen({navigation}) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -24,9 +23,9 @@ export default function HomeScreen({navigation}) {
       />
       {errorMessage ? <Text> {errorMessage} </Text> : null}
 
-      <Button title ="insert" onPress={() => insert() } />
+      {/** <Button title ="insert" onPress={() => insert() } /> */}  
 
-      <ScrollView style= {{marginBottom: 20}}>
+      <ScrollView showsVerticalScrollIndicator={false} style= {{marginBottom: 20}}>
         <ResultPaintingsList  
           results = {filterResultsByCategory("Expressionism")} 
           title="Expressionism"

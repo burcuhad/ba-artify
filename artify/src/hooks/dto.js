@@ -42,7 +42,7 @@ import db from "../../firebaseConfig"
             quer =>{
                 const b = []
                 quer.forEach((doc) => {
-                    const a = {painting_name: doc.data().name,imageUrl: doc.data().imageUrl} 
+                    const a = {painting_name: doc.data().name, imageUrl: doc.data().imageUrl} 
                     b.push(a)
                 });
                 return b[0]
