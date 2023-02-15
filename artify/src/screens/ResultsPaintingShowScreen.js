@@ -6,69 +6,81 @@ export default function ResultsPaintingShowScreen({route, navigation}) {
   const painting = route.params;
 
   return (
-  <View  style= {{marginBottom: 30, backgroundColor : "red"}}>
-    <ScrollView style= {styles.container}>
+  <View style = {styles.container}>
       <ResultsDetail result={painting.item} list={false}/>
-      <View style = {styles.insideContainer}>
+      <ScrollView style = {styles.infoContainer}>
         {painting.item.info ? 
-        <Text style = {styles.textStyle}>{painting.item.info} </Text>
+        <Text style = {styles.infoTextStyle}>{painting.item.info} </Text>
         : null}
-      </View>
-    </ScrollView>
-    <View>
+      </ScrollView>
+    
       {painting.item.tutorial ? 
           <TouchableOpacity 
-            style = {styles.button} 
+            style = {styles.buttonStyle} 
             onPress = {() => {navigation.navigate("Tutorial", {item : painting.item})}} >
             <Text style = {styles.buttonText}> Tutorial </Text>
         </TouchableOpacity>
       : null}
       <TouchableOpacity 
-        style = {styles.button} 
+        style = {styles.buttonStyle} 
         onPress = {() => {navigation.navigate("CameraScreen", {item : painting.item})}} >
         <Text style = {styles.buttonText}> Upload Your Drawing </Text>
       </TouchableOpacity>
-    </View>
+    
   </View>
   )};
   /*<Button title={'Gallery'} onPress={() => pickImage()} />*/
 
 const styles = StyleSheet.create({
   container: {
+    marginBottom: 15, 
+    //backgroundColor : "red",
+    flex:1
     //paddingTop: 20,
     //paddingHorizontal: 20,
     //height: "100%"
   },
-  insideContainer: {
-      /*justifyContent: "center",
-      alignItems:"center",
-      marginHorizontal: 15,
-      //flex: 1*/
+  infoContainer: {
+    //backgroundColor: "blue",
+    paddingTop: 5,
+    paddingHorizontal: 15,
+    
+    /*justifyContent: "center",
+    alignItems:"center",
+    marginHorizontal: 15,
+    //flex: 1*/
   },
-  textStyle: {
-    // fontSize: 15,
+  infoTextStyle: {
+     fontSize: 16,
+     textAlign: 'justify'
     // marginTop: 20, 
     // marginBottom: 10,
     // marginHorizontal: 15,
     // textAlign: "justify"
   },
   image: {
-      // marginVertical: 24,
-      // alignItems: 'center',
+    // marginVertical: 24,
+    // alignItems: 'center',
   },
   fixedRatio: {
     //flex: 1,
     //aspectRatio: 1,
   },
-  button: {
+  buttonContainer: {
+    margin: 100,
+    //backgroundColor: "green"
+  },
+  buttonStyle: {
     backgroundColor: "#6B705C",
     borderRadius: 14,
-    margin: 5,
+    marginVertical:3,
+    marginHorizontal: 15,
     padding: 10,
+    alignItems: 'center',
   },
   buttonText: {
-    // fontSize: 20,
-    // fontWeight: "600",
-    // color: "white"
+    fontSize: 20,
+    fontWeight: "600",
+    color: "white"
   }
 });
