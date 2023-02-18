@@ -6,7 +6,7 @@ export default function QuizHomeScreen({navigation}) {
     const [allQuestions, setQuestions] = useState([]);
 
     useEffect( () => {
-        //setQuizData()
+        setQuizData()
         const fetchQuestions = async() => {
             setQuestions(await getQuizData());
         }

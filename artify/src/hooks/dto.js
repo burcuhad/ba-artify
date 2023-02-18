@@ -75,7 +75,7 @@ import db from "../../firebaseConfig"
                 "name": "Viva la Vida, Watermelons",
                 "painter": "Frida Kahlo",
                 "imageUrl": "https://www.fridakahlo.org/images/paintings/viva-la-vida-watermelons.jpg",
-                "info": "",    
+                "info": "Viva la Vida, Watermelons is the last painting that Frida Kahlo did. A vibrant conclusion to the short life of Frida Kahlo, Viva la Vida, Watermelons features rich color contrasts, curves and angles, and a final message from the artist herself. Kahlo put the finishing touches on her watermelon-themed painting just a few days before her death in 1954.\n Frida Kahlo inscribed \"Vida la Viva \" on the central melon wedge at the bottom of the canvas, which translates as \"Long live life\", just eight days before she died. This may have been a straightforward statement as she neared death. It may also have been an ironic commentary on her pain-filled existence due to polio, a bus accident, and multiple surgeries. \n Watermelons have hard shells that protect the soft flesh inside. When you bite into the flesh, you experience cool, juicy sweetness. At its most elemental, a watermelon could symbolize the artist herself, who had to develop a thick skin to weather a life marked with physical pain, a troubled marriage to artist Diego Rivera and harsh criticism of her art. \n However, Kahlo shows in the painting that once her shell is cut open, it reveals an inner life that is vibrant, fresh, and sweet. Also, the many seeds of the watermelons, like those of the pomegranate in Greek mythology, symbolize fertility as well as immortality. Once the fruit is gone, the seeds carry the promise of new life forward into eternity. \n Watermelons also relate to the traditional Mexican Day of the Dead, when relatives imagine their dead feasting on watermelon and other favorite foods. On this day, Mexicans celebrate their dead rather than mourn them. The artist herself echoes this spirit in her statement, \"Long live life.\" \n The whole watermelon in the middle of the painting is spherical like the earth. It is a complete circle like the cycle of birth and death. In her diary, just days before her death, Kahlo penned her final entry stating:\"I hope the exit is joyful - and I hope never to return.\" \n Viva la Vida, Watermelons is a bright and vibrant celebration of life in both its simplicity of composition and complexity of emotional expression. It is not emblematic of the fear of death, nor is it hopelessly longing for the continuation of her own life. When Kahlo's husband, Rivera, was nearing death three years later, he painted his own watermelon epitaph, perhaps as a testament to their spiritual bond." ,    
                 "category": "Symbolism"
             },
             {
@@ -103,7 +103,7 @@ import db from "../../firebaseConfig"
                 "name": "Capo di Noli",
                 "painter": "Paul Signac",
                 "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Paul_Signac_-_Capo_di_Noli.jpg",
-                "info:": "Capo di Noli is an oil on canvas painting of 1898 by the French artist Paul Signac. It depicts a cape on the Italian Riviera, close to Genoa. Signac hiked there from Saint-Tropez two years before the painting was completed, and of his intentions he wrote he wanted to take every corner of the canvas to the absolute extreme in terms of colour ",
+                "info": "Capo di Noli is an oil on canvas painting of 1898 by the French artist Paul Signac. It depicts a cape on the Italian Riviera, close to Genoa. Signac hiked there from Saint-Tropez two years before the painting was completed, and of his intentions he wrote he wanted to take every corner of the canvas to the absolute extreme in terms of colour ",
                 "category": "Neo-Impressionism"
             },
             {
@@ -115,10 +115,10 @@ import db from "../../firebaseConfig"
                 "category": "Neo-Impressionism"
             },
             {
-                "name": "Portrait of Eduard Kosmack",
+                "name": "Self-Portrait with Striped Shirt",
                 "painter": "Egon Schiele",
-                "imageUrl": "https://sammlung.belvedere.at/internal/media/dispatcher/94300/full",
-                "info": "",    
+                "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/9/9c/Egon_Schiele_-_Self-Portrait_with_Striped_Shirt_-_Google_Art_Project.jpg",
+                "info": "A young man looks into the world with big, questioning eyes. The eyes, the high forehead, and the bushy and unruly hair accentuate a spiritual side of the sitter. The neck supporting the oversized head appears petite and slender. Schiele sketched the boyish chest with sparse lines and painted the sleeve in shades of watercolor, which act as a compositional balance to the colors of the head. In terms of color, the artist was also in full control. In the skin, he contrasted the grey of the brow with the pale red of the cheeks and ear, adding traces of blue on the cheek and enhancing the dark brown hair with shades of purple. This work is in every respect a unique and personal masterpiece in which the carefully considered composition and the intuitiveness of the painting play equal parts.",    
                 "category": "Expressionism"
             },
             {
@@ -163,7 +163,6 @@ import db from "../../firebaseConfig"
             const snapshot = await getCountFromServer(q);
             console.log('count: ', snapshot.data().count, " painting name: ", onePainting.name);
             if(snapshot.data().count == 0) {
-                console.log("adding doc: ")
                 addDoc(collection(db, "paintings"), 
                     onePainting  
                 );
@@ -256,7 +255,7 @@ import db from "../../firebaseConfig"
     /**
      *     * adds quiz test questions to firebase database to "questions" collection
      */
-    export function setQuizData() {
+    export async function setQuizData() {
         const db = getFirestore();
         const questions = [
             {
@@ -287,23 +286,38 @@ import db from "../../firebaseConfig"
                 a : "Sandro Boticelli"
             },
             {
-                q: "q1",
-                imageUrl: "https://upload.wikimedia.org/wikipedia/commons/e/ee/Paul_Signac_-_Capo_di_Noli.jpg",
-                o_1 : "Henri ",
-                o_2 : "George ",
-                o_3 : "Paul ",
-                o_4 : "Sandro ",
-                a : "Sandro "
+                q: "What is the name of the famous artwork seen above?",
+                imageUrl: "https://www.belvedere.at/sites/default/files/jart-images/_445339522104_2.jpg",
+                o_1 : "The Birth of Venus",
+                o_2 : "The Last Supper",
+                o_3 : "The Kiss",
+                o_4 : "Delightful Land",
+                a : "The Kiss"
+            },
+            {
+                q: "Which of the following art movement has the artist Wassily Kandinsky has influenced in the seen work?",
+                imageUrl: "https://k2k6p3n8.stackpathcdn.com/wp-content/uploads/2019/12/Wassily-Kandinksy-Komposition-VIII-1923.webp",
+                o_1 : "Cubism",
+                o_2 : "Neo-Impressionism",
+                o_3 : "Baroque",
+                o_4 : "Expressionism",
+                a : "Expressionism"
             }
         ]
         
         for(var i = 0; i < questions.length; ++i) {
             var oneQuestion = questions[i];
             
-            addDoc(collection(db, "questions"), 
-                oneQuestion  
-            )
-            console.log("one question: ", oneQuestion)
+            const coll = collection(db, "questions");
+            const q = query(coll, where("q", "==", oneQuestion.q));
+            const snapshot = await getCountFromServer(q);
+            console.log('count: ', snapshot.data().count, " question: ", oneQuestion.q);
+
+            if(snapshot.data().count == 0) {
+                addDoc(collection(db, "questions"), 
+                    oneQuestion  
+                )
+            }
         }
     }
 
