@@ -1,5 +1,5 @@
 import React, { useState } from "react";  
-import {Text, Button, ScrollView} from "react-native";
+import {Text, ScrollView} from "react-native";
 import SearchBar from "../components/SearchBar";
 import useResultPaintings from "../hooks/useResultPaintings";
 import ResultPaintingsList from "../components/ResultPaintingsList";

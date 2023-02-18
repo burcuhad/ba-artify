@@ -1,5 +1,4 @@
-import { async } from "@firebase/util";
-import React , { useEffect, useState } from "react";  
+import { async } from "@firebase/util";import React , { useEffect, useState } from "react";  
 import {Text, View, ScrollView, StyleSheet, TouchableOpacity, Image} from "react-native";
 
 export default function QuizQuestionScreen({route, navigation}) {
@@ -12,9 +11,9 @@ export default function QuizQuestionScreen({route, navigation}) {
     const isAnswerCorrect = (a,b) => {
         console.log("answer", a,b)
         //if (isAnsCorrect === -1) {
-            if (a === b ){
+            if (a === b ) {
                 setIsAnsCorrect(1)
-            }else {
+            } else {
                 setIsAnsCorrect(0)
             }
         //}
@@ -68,7 +67,7 @@ export default function QuizQuestionScreen({route, navigation}) {
             <View style={styles.containerBottom}>
                 {/*<TouchableOpacity style = {styles.button}> 
                     <Text style = {styles.buttonText}> Previous </Text>
-    </TouchableOpacity>   */}
+                </TouchableOpacity>   */}
                 {((par.allQuestions.length -1) === par.currentQuestionIndex)
                     ?
                     <TouchableOpacity 
