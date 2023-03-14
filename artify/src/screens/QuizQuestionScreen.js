@@ -2,24 +2,24 @@ import { async } from "@firebase/util";import React , { useEffect, useState } fr
 import {Text, View, ScrollView, StyleSheet, TouchableOpacity, Image} from "react-native";
 
 export default function QuizQuestionScreen({route, navigation}) {
-    const [isAnsCorrect, setIsAnsCorrect] = useState(-1);
+    const [isAnsCorrect, setIsAnsCorrect] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(0);
 
     const par = route.params
     const currentQuestion = par.allQuestions[par.currentQuestionIndex]
 
-    const isAnswerCorrect = (a,b) => {
-        console.log("answer", a,b)
+    const isAnswerCorrect = (answer, selected) => {
+        console.log("correct answer: \"", answer,"\" but selected: \"", selected, "\"")
         //if (isAnsCorrect === -1) {
-            if (a === b ) {
-                setIsAnsCorrect(1)
+            if (answer === selected) {
+                setIsAnsCorrect(+10)
             } else {
-                setIsAnsCorrect(0)
+                setIsAnsCorrect(-10)
             }
         //}
     }
     useEffect( () => {
-        setIsAnsCorrect(-1)
+        setIsAnsCorrect(0)
     }, []);
 
     console.log("isAns", isAnsCorrect)
@@ -39,41 +39,41 @@ export default function QuizQuestionScreen({route, navigation}) {
             </View>
             <View style = {styles.answerOptions}>
                 <TouchableOpacity
-                    style = {selectedAnswer=== 1 ? styles.selectedAnswerButton : styles.answerButton} 
-                    onPress={() =>{ isAnswerCorrect(currentQuestion.a, currentQuestion.o_1), change(1)  }}
+                    style = {selectedAnswer === 1 ? styles.selectedAnswerButton : styles.answerButton} 
+                    onPress={() =>{ isAnswerCorrect(currentQuestion.a, currentQuestion.o_1), change(1) }}
                 > 
                     <Text style = {styles.answerOption}> {currentQuestion.o_1} </Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
-                    style = {selectedAnswer=== 2 ? styles.selectedAnswerButton : styles.answerButton} 
-                    onPress={() =>{ isAnswerCorrect(currentQuestion.a, currentQuestion.o_2), change(2)  }}
+                    style = {selectedAnswer === 2 ? styles.selectedAnswerButton : styles.answerButton} 
+                    onPress={() =>{ isAnswerCorrect(currentQuestion.a, currentQuestion.o_2), change(2) }}
                 > 
                     <Text style = {styles.answerOption}> {currentQuestion.o_2} </Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
-                    style = {selectedAnswer=== 3 ? styles.selectedAnswerButton : styles.answerButton} 
-                    onPress={() =>{ isAnswerCorrect(currentQuestion.a, currentQuestion.o_3), change(3)  }}
+                    style = {selectedAnswer === 3 ? styles.selectedAnswerButton : styles.answerButton} 
+                    onPress={() =>{ isAnswerCorrect(currentQuestion.a, currentQuestion.o_3), change(3) }}
                 > 
                     <Text style = {styles.answerOption}> {currentQuestion.o_3} </Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
-                    style = {selectedAnswer=== 4 ? styles.selectedAnswerButton : styles.answerButton} 
-                    onPress={() =>{ isAnswerCorrect(currentQuestion.a, currentQuestion.o_4), change(4)  }}
+                    style = {selectedAnswer === 4 ? styles.selectedAnswerButton : styles.answerButton} 
+                    onPress={() =>{ isAnswerCorrect(currentQuestion.a, currentQuestion.o_4), change(4) }}
                 > 
                     <Text style = {styles.answerOption}> {currentQuestion.o_4} </Text>
                 </TouchableOpacity>
                 <Text>Current correct {par.correctAnswersCount }</Text>
             </View>
             <View style={styles.containerBottom}>
-                {/*<TouchableOpacity style = {styles.button}> 
-                    <Text style = {styles.buttonText}> Previous </Text>
-                </TouchableOpacity>   */}
                 {((par.allQuestions.length -1) === par.currentQuestionIndex)
                     ?
                     <TouchableOpacity 
                         style = {styles.button}
                         onPress={() => {
-                            navigation.navigate("QuizResult",{allQuestions: par.allQuestions, correctAnswersCount : par.correctAnswersCount})}
+                            navigation.navigate("QuizResult", {
+                                allQuestions: par.allQuestions, 
+                                correctAnswersCount : par.correctAnswersCount
+                            })}
                         }
                     > 
                         <Text style = {styles.buttonText}> End </Text>
@@ -82,18 +82,16 @@ export default function QuizQuestionScreen({route, navigation}) {
                     <TouchableOpacity 
                         style = {styles.button}
                         onPress={() => {
-                            setIsAnsCorrect(-1)
+                            //setIsAnsCorrect(-10)
                             navigation.navigate("QuizQuestion", {
-                            allQuestions : par.allQuestions,
-                            currentQuestionIndex: par.currentQuestionIndex + 1,
-                            correctAnswersCount: par.correctAnswersCount + isAnsCorrect
+                                allQuestions : par.allQuestions,
+                                currentQuestionIndex: par.currentQuestionIndex + 1,
+                                correctAnswersCount: par.correctAnswersCount + isAnsCorrect
                         })}}
                     > 
                         <Text style = {styles.buttonText}> Next </Text>
                     </TouchableOpacity>
                 }             
-                
-                {/**/}
             </View>
         </ScrollView> 
     );

@@ -26,8 +26,6 @@ export default function useResultPaintings() {
     }
     
     const getCurrentPaintings = searchTerm => {
-        console.log("hi")
-
         if (searchTerm == null || searchTerm == "") {
             setCurrentPaintings(allPaintings);
         } else {

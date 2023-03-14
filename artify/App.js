@@ -16,6 +16,7 @@ import ProfileShowSingleScreen from './src/screens/ProfileShowSingleScreen';
 //TODO 1. make useEffect work with each render 2. delete should happen after user input by warning
 // after pressing post and going to profile it doesn't show
 // delete works second time, force useeffect?
+// wait at alert by deleting
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -38,7 +39,7 @@ export default function App() {
         <Stack.Screen name="Tutorial" component={TutorialScreen} options = {{ title: ' ' }}/>
         <Stack.Screen name="ResultsShow" options={{ title: ' ' }} component={ResultPaintingShowScreen} />
         <Stack.Screen name='CameraScreen' component={CameraScreen} options = {{ title: ' ', headerShown: false}}/>
-        <Stack.Screen name='Profile' component={ProfileScreen} options = {{ headerShown: false}} />
+        <Stack.Screen name='Profile' component={ProfileScreen} options = {{ headerShown: true}} />
         <Stack.Screen name='ProfileShowSingle' component={ProfileShowSingleScreen} options = {{ headerShown: false}} />
         <Stack.Screen name='QuizQuestion' component={QuizQuestionScreen} options = {{ headerShown: false} }/>
         <Stack.Screen name='QuizResult' component={QuizResultScreen} options = {{ headerShown: false} }/>

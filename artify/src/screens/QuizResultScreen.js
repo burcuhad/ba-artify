@@ -9,7 +9,7 @@ export default function QuizResultScreen({route,navigation}) {
             <Text style = {styles.title}>RESULTS </Text>
             <Text style={styles.scoreValue}> {par.correctAnswersCount} </Text>
             <View style={styles.insideContainer}>
-                {(par.correctAnswersCount > 1) ? 
+                {(par.correctAnswersCount > 20) ? 
                 <Image 
                     style={styles.imagePreview} 
                     source={require('../image/success.png')}
@@ -25,11 +25,11 @@ export default function QuizResultScreen({route,navigation}) {
             </View>
 
             <View>
-                <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate("HomeGallery")}}>
-                    <Text style={styles.buttonText}> GO TO HOME </Text>
-                </TouchableOpacity>
                 <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate("QuizHome")}}>
                     <Text style={styles.buttonText}> GO TO QUIZ </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate("HomeGallery")}}>
+                    <Text style={styles.buttonText}> GO TO HOME </Text>
                 </TouchableOpacity>
             </View>
         </View>

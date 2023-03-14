@@ -23,7 +23,6 @@ export default function QuizHomeScreen({navigation}) {
                     style={styles.imageHome}
                     //source={{uri: "https://duquets.files.wordpress.com/2011/12/art-history-collage.jpg"}}
                     source={require('../image/artist.png')}
-                    //source={require('../image/burnout2.png')}
                 />   
             </View>
             <TouchableOpacity 

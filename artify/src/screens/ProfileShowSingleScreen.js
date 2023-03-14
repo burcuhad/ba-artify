@@ -5,12 +5,12 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
-  Alert
+  Alert,
+  Text
 } from "react-native";
 
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
 import { shareAsync } from 'expo-sharing';
 import { deletePhotoDB } from "../hooks/dto";
 
@@ -41,7 +41,7 @@ export default function ProfileShowSingleScreen({route, navigation}) {
 
   const deleteImage = async() => {
     //Alert.alert("Delete this post from your profile?");
-    await AsyncAlert()
+    //await AsyncAlert()
     await deletePhotoDB(painting.item.imageUrl)
   };
 
@@ -59,13 +59,21 @@ export default function ProfileShowSingleScreen({route, navigation}) {
               onPress={() => shareImage()} 
             />
             <Ionicons name="ios-trash-bin-sharp" size={24} color="black" 
-              onPress={() => {
-                deleteImage() 
-                navigation.navigate("Profile") 
-              }}
+              onPress={ async () => 
+                {
+                  deleteImage() 
+                  navigation.navigate("Profile") 
+                }
+              
+              }
             />
           </View>
         : null}
+        <TouchableOpacity 
+          style = {styles.buttonStyle} 
+          onPress = {() => {navigation.navigate("Profile") }} >
+          <Text style = {styles.buttonText}> GO TO PROFILE </Text>
+        </TouchableOpacity>
         </View>
     );
 }
@@ -99,5 +107,18 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     borderRadius: 4,
     marginBottom: 5,
+  },
+  buttonText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: 'white',
+  },
+  buttonStyle: {
+    backgroundColor: "#6B705C",
+    borderRadius: 14,
+    marginVertical:3,
+    marginHorizontal: 15,
+    padding: 10,
+    alignItems: 'center',
   },
 });

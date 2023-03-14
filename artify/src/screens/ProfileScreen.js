@@ -8,7 +8,8 @@ import {
     TouchableOpacity,
     StyleSheet
 } from "react-native";
-import { getCapturedUserProfilePaintings, getReferencePainting, getPaintings } from "../hooks/dto"; 
+import { getCapturedUserProfilePaintings, getReferencePainting, getPaintings } from "../hooks/dto";
+import { Ionicons } from '@expo/vector-icons';
 
 export default function ProfileScreen({navigation}) {
     const [allUserProfilePaintings, setAllUserProfilePaintings] = useState([]);
@@ -17,25 +18,21 @@ export default function ProfileScreen({navigation}) {
     useEffect(() => {
         console.log("profile useEffect called");
 
-        async function fetchUserData() {
-            setAllUserProfilePaintings(await getCapturedUserProfilePaintings(1));
-        }
+        // async function fetchUserData() {
+        //     setAllUserProfilePaintings(await getCapturedUserProfilePaintings(1));
+        // }
     
-        async function fetchUserData() {
-            setAllUserProfilePaintings(await getCapturedUserProfilePaintings(1));
-        }
-
-        const initPaintings = async() => {
-            console.log("inside init paintings in profile: ");
-            const allPaintingsCollection = await getPaintings();
-            setAllPaintings(allPaintingsCollection);
-        }
+        // const initPaintings = async() => {
+        //     console.log("inside init paintings in profile: ");
+        //     const allPaintingsCollection = await getPaintings();
+        //     setAllPaintings(allPaintingsCollection);
+        // } 
 
         fetchUserData()
         initPaintings();
     }, []);
 
-    /*async function fetchUserData() {
+    async function fetchUserData() {
         setAllUserProfilePaintings(await getCapturedUserProfilePaintings(1));
     }
 
@@ -43,7 +40,7 @@ export default function ProfileScreen({navigation}) {
         console.log("inside init paintings in profile: ");
         const allPaintingsCollection = await getPaintings();
         setAllPaintings(allPaintingsCollection);
-    } */
+    } 
 
     const filterResultsByName =  (allUserProfilePaintings, paintingName, allPaintings) => {
         const referencedUserCapturedPainting = allUserProfilePaintings.filter(result => {
@@ -63,7 +60,14 @@ export default function ProfileScreen({navigation}) {
     
     return (
         <SafeAreaView style = {{marginBottom: 60}}>   
+        {/*<TouchableOpacity  onPress={() => {fetchUserData(), initPaintings()}} > 
+            <Text>Refresh</Text> 
+        </TouchableOpacity> */}
             <Text style={styles.text}>You have {Array.from(new Set(allUserProfilePaintings.map(item => item.painting_name))).map(item => {return {name: item}}).length}/{allPaintings.length} try to catch it all! </Text>
+            <View style={{flexDirection: "row"}}>
+                <Ionicons name = "refresh" style ={{margin: 30}} size={24} color="black" onPress={() => { fetchUserData(), initPaintings()}} />
+                <Text> </Text>
+            </View>
             <FlatList
                 vertical
                 showsHorizontalScrollIndicator = {false}

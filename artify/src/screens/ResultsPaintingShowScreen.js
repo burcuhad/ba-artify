@@ -15,17 +15,17 @@ export default function ResultsPaintingShowScreen({route, navigation}) {
       </ScrollView>
     
       {painting.item.tutorial ? 
-          <TouchableOpacity 
-            style = {styles.buttonStyle} 
-            onPress = {() => {navigation.navigate("Tutorial", {item : painting.item})}} >
-            <Text style = {styles.buttonText}> Tutorial </Text>
+        <TouchableOpacity 
+          style = {styles.buttonStyle} 
+          onPress = {() => {navigation.navigate("Tutorial", {item : painting.item})}} >
+          <Text style = {styles.buttonText}> Tutorial </Text>
         </TouchableOpacity>
       : null}
-      <TouchableOpacity 
-        style = {styles.buttonStyle} 
-        onPress = {() => {navigation.navigate("CameraScreen", {item : painting.item})}} >
-        <Text style = {styles.buttonText}> Upload Your Drawing </Text>
-      </TouchableOpacity>
+        <TouchableOpacity 
+          style = {styles.buttonStyle} 
+          onPress = {() => {navigation.navigate("CameraScreen", {item : painting.item})}} >
+          <Text style = {styles.buttonText}> Upload Your Drawing </Text>
+        </TouchableOpacity>
     
   </View>
   )};
